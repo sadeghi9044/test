@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سئو | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body data-page="seo">
+
+<div id="editorRoot"></div>
+
+<template id="pageBody">
+
+<section class="editor-section">
+  <h2>🔍 نمایش در گوگل</h2>
+  <p class="editor-desc">اطلاعاتی که در نتایج جستجو نمایش داده می‌شود</p>
+  <div class="editor-field"><label>پیش‌نمایش نتیجه‌ی گوگل</label>
+    <div class="serp"><div class="u" id="serpUrl"></div><div class="t" id="serpTitle"></div><div class="d" id="serpDesc"></div></div>
+  </div>
+  <div class="editor-field"><label>عنوان صفحه (Title)</label><input type="text" data-key="seoTitle" maxlength="120" data-count></div>
+  <div class="editor-field"><label>توضیحات (Description)</label><textarea data-key="seoDescription" rows="3" maxlength="300" data-count></textarea>
+    <div class="editor-hint">گوگل معمولاً حدود ۱۶۰ کاراکتر اول را نشان می‌دهد.</div></div>
+  <div class="editor-field"><label>کلمات کلیدی (با کاما جدا کنید)</label><input type="text" data-key="seoKeywords" maxlength="200"></div>
+</section>
+
+</template>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/editor-core.js"></script>
+<script>
+
+Editor.start('seo', {
+  title: 'سئو', sub: 'نمایش سایت در موتورهای جستجو', preview: false,
+  ready: function (E) {
+    var host = E.site.subdomain + '.' + (window.BASE_DOMAIN || 'yoursite.com');
+    function paint() {
+      document.getElementById('serpUrl').textContent = 'https://' + host;
+      document.getElementById('serpTitle').textContent = E.editor.seoTitle || E.editor.siteName;
+      document.getElementById('serpDesc').textContent = E.editor.seoDescription || '';
+    }
+    paint();
+    document.getElementById('edForms').addEventListener('input', paint);
+  }
+});
+
+</script>
+</body>
+</html>

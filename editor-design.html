@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ظاهر و برند | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body data-page="design">
+
+<div id="editorRoot"></div>
+
+<template id="pageBody">
+
+<section class="editor-section" id="templates">
+  <h2>🎨 انتخاب قالب</h2>
+  <p class="editor-desc">یک قالب آماده انتخاب کنید. هر زمان می‌توانید عوضش کنید؛ محتوای شما از بین نمی‌رود.</p>
+  <div class="template-picker-grid" id="templatePicker">
+    <button type="button" class="tpl-card" data-template="business"><div class="tpl-card-preview business">💼</div><div class="label">کسب و کار</div></button>
+    <button type="button" class="tpl-card" data-template="shop"><div class="tpl-card-preview shop">🛍️</div><div class="label">فروشگاه</div></button>
+    <button type="button" class="tpl-card" data-template="portfolio"><div class="tpl-card-preview portfolio">🎨</div><div class="label">پورتفولیو</div></button>
+    <button type="button" class="tpl-card" data-template="blog"><div class="tpl-card-preview blog">📝</div><div class="label">وبلاگ</div></button>
+    <button type="button" class="tpl-card" data-template="restaurant"><div class="tpl-card-preview restaurant">🍽️</div><div class="label">رستوران</div></button>
+    <button type="button" class="tpl-card" data-template="realestate"><div class="tpl-card-preview realestate">🏠</div><div class="label">املاک</div></button>
+  </div>
+</section>
+
+<section class="editor-section" id="branding">
+  <h2>🏷️ نام و لوگو</h2>
+  <p class="editor-desc">نامی که در بالای سایت و تب مرورگر دیده می‌شود</p>
+  <div class="editor-field"><label>نام سایت</label><input type="text" data-key="siteName" maxlength="60"></div>
+  <div class="editor-field"><label>متن لوگو</label><input type="text" data-key="logoText" maxlength="60"></div>
+  <div class="editor-field">
+    <label>تصویر لوگو (اختیاری — جایگزین متن می‌شود)</label>
+    <div class="editor-upload-row">
+      <input type="text" data-key="logoImage" data-img placeholder="آدرس تصویر یا از فایل انتخاب کن" style="direction:ltr;text-align:left;">
+      <input type="file" accept="image/*" data-upload="logoImage">
+    </div>
+    <img class="editor-img-preview hidden" data-preview="logoImage" alt="">
+  </div>
+  <div class="editor-field"><label>شعار سایت</label><input type="text" data-key="tagline" maxlength="120"></div>
+</section>
+
+<section class="editor-section" id="colors">
+  <h2>🌈 رنگ‌ها</h2>
+  <p class="editor-desc">با یک پالت آماده شروع کنید یا رنگ‌ها را دقیق تنظیم کنید</p>
+  <div class="palette-row" id="palettes"></div>
+  <div class="editor-row">
+    <div class="editor-field"><label>رنگ اصلی</label><div class="editor-color-field"><input type="color" data-color-key="primaryColor"><input type="text" data-key="primaryColor" maxlength="7"></div></div>
+    <div class="editor-field"><label>رنگ ثانویه</label><div class="editor-color-field"><input type="color" data-color-key="secondaryColor"><input type="text" data-key="secondaryColor" maxlength="7"></div></div>
+  </div>
+  <div class="editor-row">
+    <div class="editor-field"><label>پس‌زمینه</label><div class="editor-color-field"><input type="color" data-color-key="bgColor"><input type="text" data-key="bgColor" maxlength="7"></div></div>
+    <div class="editor-field"><label>رنگ متن</label><div class="editor-color-field"><input type="color" data-color-key="textColor"><input type="text" data-key="textColor" maxlength="7"></div></div>
+  </div>
+</section>
+
+</template>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/editor-core.js"></script>
+<script>
+
+var PALETTES = [
+  { n: 'بنفش', p: '#8b5cf6', s: '#ec4899' }, { n: 'آبی', p: '#2563eb', s: '#06b6d4' },
+  { n: 'سبز', p: '#059669', s: '#84cc16' }, { n: 'نارنجی', p: '#ea580c', s: '#f59e0b' },
+  { n: 'قرمز', p: '#dc2626', s: '#f472b6' }, { n: 'سرمه‌ای', p: '#1e3a8a', s: '#6366f1' }
+];
+Editor.start('design', {
+  title: 'ظاهر و برند', sub: 'قالب، نام، لوگو و رنگ‌ها',
+  ready: function (E) {
+    var picker = document.getElementById('templatePicker');
+    function mark() { picker.querySelectorAll('.tpl-card').forEach(function (c) { c.classList.toggle('active', c.dataset.template === E.editor.template); }); }
+    picker.querySelectorAll('.tpl-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        E.editor.template = card.dataset.template;
+        mark(); E.touch(); E.refreshChrome(); E.renderPreview();
+        E.toast('قالب تغییر کرد. پیش‌نمایش را ببین!');
+      });
+    });
+    mark();
+
+    var pal = document.getElementById('palettes');
+    pal.innerHTML = PALETTES.map(function (p, i) {
+      return '<button type="button" class="palette" data-i="' + i + '"><i style="background:' + p.p + '"></i><i style="background:' + p.s + '"></i> ' + p.n + '</button>';
+    }).join('');
+    pal.addEventListener('click', function (e) {
+      var b = e.target.closest('.palette'); if (!b) return;
+      var p = PALETTES[+b.dataset.i];
+      [['primaryColor', p.p], ['secondaryColor', p.s]].forEach(function (kv) {
+        E.editor[kv[0]] = kv[1];
+        document.querySelectorAll('[data-key="' + kv[0] + '"],[data-color-key="' + kv[0] + '"]').forEach(function (el) { el.value = kv[1]; });
+      });
+      E.touch(); E.renderPreview();
+    });
+  }
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ساخت سایت | سایت‌ساز</title>
+<meta name="description" content="ساخت سایت">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<meta name="robots" content="noindex">
+</head>
+<body>
+
+<nav id="navbar"><div class="nav-inner"><a href="index.html" class="logo">◆ سایت‌ساز</a><a href="dashboard.html" class="btn btn-ghost nav-cta">داشبورد</a></div></nav>
+<style>
+.wz{max-width:680px;margin:96px auto 60px;padding:0 16px}
+.wz-card{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px}
+.wz-bar{display:flex;gap:6px;margin-bottom:18px}.wz-bar i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.12)}.wz-bar i.on{background:linear-gradient(90deg,#8b5cf6,#ec4899)}
+.wz h2{margin-bottom:6px}.wz .sub{color:var(--muted);font-size:.88rem;margin-bottom:18px}
+.wz-step{display:none}.wz-step.show{display:block}
+.wz input[type=text],.wz input[type=email],.wz input[type=tel],.wz textarea,.wz select{width:100%;padding:12px 14px;background:var(--bg2);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text);font-family:inherit;font-size:.92rem}
+.wz .ltr{direction:ltr;text-align:left}.wz .auth-field{margin-bottom:14px}.wz label{display:block;margin-bottom:6px;font-size:.85rem}
+.wz-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.wz-opt{padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:12px;cursor:pointer;background:var(--bg2);text-align:center;font-size:.9rem;color:var(--text);font-family:inherit}
+.wz-opt.on{border-color:#8b5cf6;background:rgba(139,92,246,.18)}
+.wz-row{display:grid;grid-template-columns:2fr 1fr 2fr auto;gap:8px;margin-bottom:8px;align-items:center}
+.wz-sw{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:.92rem}
+.wz-sw input{width:20px;height:20px}
+.wz-hint{font-size:.8rem;margin-top:6px}.wz-hint.ok{color:#34d399}.wz-hint.bad{color:#f87171}
+.wz-nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.wz-prev{border-radius:12px;padding:20px;color:#fff;text-align:center;margin-top:10px}
+.wz-sum div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:.9rem}.wz-sum span{color:var(--muted)}
+.wz-err{color:#f87171;font-size:.85rem;margin-top:12px;min-height:1.2em}
+@media(max-width:560px){.wz-row{grid-template-columns:1fr 1fr}.wz-row input:first-child,.wz-row input:nth-child(3){grid-column:1/-1}}
+</style>
+<main class="wz"><div class="wz-card">
+<div class="wz-bar" id="bar"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<div id="saveState" class="wz-hint" style="margin:-8px 0 10px;color:var(--muted)"></div>
+
+<div class="wz-step" data-s="1">
+  <h2>۱. معرفی کسب‌وکار</h2><p class="sub">چند اطلاعات ساده؛ بقیه را ما می‌سازیم.</p>
+  <div class="auth-field"><label>نام کسب‌وکار</label><input type="text" id="businessName" maxlength="60" placeholder="مثلاً: فروشگاه گل‌ها"></div>
+  <div class="auth-field"><label>نوع کسب‌وکار</label><div class="wz-opts" id="typeOpts"></div></div>
+  <div class="auth-field"><label>یک جمله درباره‌ی کسب‌وکارت (اختیاری)</label><textarea id="description" rows="2" maxlength="300"></textarea></div>
+  <div class="auth-field"><label>آدرس سایت</label>
+    <div style="display:flex;direction:ltr"><input type="text" id="subdomain" class="ltr" maxlength="30" placeholder="my-shop" style="border-radius:10px 0 0 10px"><span id="suffix" style="padding:12px 14px;background:var(--bg2);border:1px solid rgba(255,255,255,.12);border-left:none;border-radius:0 10px 10px 0;color:var(--muted);font-family:monospace;font-size:.85rem"></span></div>
+    <div id="subHint" class="wz-hint"></div></div>
+</div>
+
+<div class="wz-step" data-s="2">
+  <h2>۲. محصولات و خدمات</h2><p class="sub">تا ۱۰ مورد اضافه کن. می‌توانی رد شوی و بعداً از پنل پر کنی؛ در این صورت نمونه‌ی ویرایش‌شدنی می‌گذاریم.</p>
+  <div id="items"></div>
+  <button type="button" class="btn btn-ghost" id="addItem">+ افزودن مورد</button>
+</div>
+
+<div class="wz-step" data-s="3">
+  <h2>۳. هدف سایت</h2><p class="sub">مهم‌ترین کار سایتت چیست؟</p>
+  <div class="wz-opts" id="goalOpts"></div>
+</div>
+
+<div class="wz-step" data-s="4">
+  <h2>۴. صفحات و امکانات</h2><p class="sub">هر بخشی را که می‌خواهی روشن کن. بعداً هم قابل تغییر است.</p>
+  <div id="switches"></div>
+</div>
+
+<div class="wz-step" data-s="5">
+  <h2>۵. برند و تماس</h2><p class="sub">لحن متن‌ها، اطلاعات تماس، لوگو و رنگ‌ها.</p>
+  <div class="auth-field"><label>لحن متن‌ها</label><div class="wz-opts" id="toneOpts"></div></div>
+  <div class="auth-field"><label>تلفن</label><input type="tel" id="phone" class="ltr" maxlength="40"></div>
+  <div class="auth-field"><label>ایمیل</label><input type="email" id="email" class="ltr" maxlength="120"></div>
+  <div class="auth-field"><label>آدرس</label><input type="text" id="address" maxlength="200"></div>
+  <div class="auth-field"><label>لوگو (اختیاری، تا ۵ مگابایت)</label><input type="file" id="logoFile" accept="image/png,image/jpeg,image/gif,image/webp"><div id="logoHint" class="wz-hint"></div></div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <div class="auth-field"><label>رنگ اصلی</label><input type="color" id="primaryColor"></div>
+    <div class="auth-field"><label>رنگ دوم</label><input type="color" id="secondaryColor"></div>
+  </div>
+  <div class="wz-prev" id="prev"><div id="prevLogo" style="font-weight:700;font-size:1.1rem"></div><div id="prevTag" style="opacity:.9;margin:6px 0"></div><span id="prevBtn" style="display:inline-block;background:rgba(255,255,255,.25);padding:6px 16px;border-radius:8px;font-size:.85rem"></span></div>
+</div>
+
+<div class="wz-step" data-s="6">
+  <h2>۶. مرور و تأیید</h2><p class="sub">اگر همه‌چیز درست است، ساخت را شروع کن.</p>
+  <div class="wz-sum" id="summary"></div>
+</div>
+
+<div class="wz-err" id="err"></div>
+<div class="wz-nav"><button type="button" class="btn btn-ghost" id="prevBtn2">قبلی</button><button type="button" class="btn btn-primary" id="nextBtn">بعدی</button></div>
+</div></main>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/wizard.js"></script>
+</body>
+</html>

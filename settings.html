@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚙️ تنظیمات سایت</title>
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary: #8b5cf6;
+  --secondary: #ec4899;
+  --bg: #0a0a14;
+  --bg2: #10101f;
+  --card: #161628;
+  --text: #f0f0ff;
+  --muted: #9ca3af;
+  --grad: linear-gradient(135deg, #8b5cf6, #ec4899);
+  --border: rgba(255,255,255,0.08);
+}
+body {
+  font-family: 'Vazirmatn', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+}
+button, input, select, textarea { font-family: inherit; }
+
+/* Layout */
+.admin-layout { display: flex; min-height: 100vh; }
+
+/* Sidebar */
+.admin-sidebar {
+  width: 260px; flex-shrink: 0;
+  background: var(--bg2);
+  border-left: 1px solid var(--border);
+  padding: 24px 16px;
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.admin-brand {
+  font-size: 1.1rem; font-weight: 800;
+  padding: 12px 14px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.admin-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.admin-nav a {
+  display: block; padding: 10px 14px;
+  color: var(--muted); text-decoration: none;
+  border-radius: 10px; font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.admin-nav a:hover { background: rgba(139,92,246,0.1); color: var(--text); }
+.admin-nav a.active { background: rgba(139,92,246,0.15); color: var(--text); font-weight: 600; }
+
+/* Main */
+.admin-main { flex: 1; min-width: 0; padding: 0 32px 80px; }
+
+/* Header sticky */
+.admin-header {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(10,10,20,0.85);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  margin: 0 -32px 32px;
+  padding-left: 32px; padding-right: 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; flex-wrap: wrap;
+}
+.admin-header h1 { font-size: 1.4rem; font-weight: 800; }
+.admin-header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.btn {
+  padding: 10px 20px; border-radius: 10px; border: none;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: var(--grad); color: white; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(139,92,246,0.4); }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--primary); background: rgba(139,92,246,0.08); }
+.btn-danger { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+.btn-danger:hover { background: rgba(239,68,68,0.25); }
+.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+
+/* Sections */
+.form-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 24px;
+  scroll-margin-top: 100px;
+}
+.form-section h2 {
+  font-size: 1.15rem; font-weight: 700;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.form-section .section-desc {
+  color: var(--muted); font-size: 0.85rem;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-field { margin-bottom: 20px; }
+.form-field:last-child { margin-bottom: 0; }
+.form-field label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.form-field small {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 6px;
+  opacity: 0.8;
+}
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="number"],
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+}
+.form-field textarea { resize: vertical; min-height: 80px; }
+
+/* Grid rows */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) { .form-row { grid-template-columns: 1fr; } }
+
+/* Color input */
+.color-field { display: flex; gap: 10px; align-items: center; }
+.color-field input[type="color"] {
+  width: 48px; height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  cursor: pointer; padding: 3px;
+}
+.color-field input[type="text"] { flex: 1; font-family: monospace; direction: ltr; }
+
+/* Upload */
+.upload-row { display: flex; gap: 10px; align-items: center; }
+.upload-row input[type="text"] { flex: 1; }
+.upload-row input[type="file"] {
+  padding: 8px;
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.upload-row input[type="file"]::file-selector-button {
+  background: var(--primary); color: white;
+  border: none; padding: 4px 10px;
+  border-radius: 6px; cursor: pointer; margin-left: 8px;
+  font-family: inherit; font-size: 0.75rem;
+}
+.img-preview {
+  display: block;
+  max-width: 100px; max-height: 60px;
+  margin-top: 8px; border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+/* Toggle */
+.toggle-row {
+  display: flex; justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.toggle-label { font-size: 0.9rem; }
+.toggle-switch {
+  position: relative;
+  width: 46px; height: 26px;
+  background: var(--bg2); border-radius: 50px;
+  border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.2s;
+  flex-shrink: 0;
+}
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px; right: 2px;
+  width: 20px; height: 20px;
+  background: var(--muted);
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+.toggle-switch.on { background: var(--primary); border-color: var(--primary); }
+.toggle-switch.on::after { right: calc(100% - 22px); background: white; }
+.toggle-switch input { display: none; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #10b981; color: white;
+  padding: 12px 24px; border-radius: 12px;
+  font-weight: 600; font-size: 0.9rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  transition: transform 0.3s;
+  z-index: 1000;
+  opacity: 0;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast.error { background: #ef4444; }
+
+/* Mobile */
+@media (max-width: 800px) {
+  .admin-layout { flex-direction: column; }
+  .admin-sidebar {
+    width: 100%; height: auto; position: static;
+    border-left: none; border-bottom: 1px solid var(--border);
+    padding: 16px;
+  }
+  .admin-nav {
+    flex-direction: row; overflow-x: auto;
+    gap: 8px; padding-bottom: 8px;
+  }
+  .admin-nav a { white-space: nowrap; }
+  .admin-main { padding: 0 16px 60px; }
+  .admin-header { margin: 0 -16px 24px; padding-left: 16px; padding-right: 16px; }
+}
+
+/* Hidden */
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-brand">⚙️ تنظیمات سایت</div>
+    <nav class="admin-nav">
+      <a href="#branding" class="active">🏷️ برندینگ</a>
+      <a href="#colors">🎨 رنگ‌ها</a>
+      <a href="#hero">📝 صفحه اصلی</a>
+      <a href="#sections">👁️ بخش‌ها</a>
+      <a href="#contact">📞 اطلاعات تماس</a>
+      <a href="#stats">📊 آمار</a>
+      <a href="#backup">💾 پشتیبان‌گیری</a>
+    </nav>
+    <a href="index.html" class="btn btn-ghost btn-sm" style="margin-top:16px;justify-content:center;">← مشاهده سایت</a>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <h1>⚙️ تنظیمات سایت</h1>
+      <div class="admin-header-actions">
+        <button id="reset-btn" class="btn btn-danger">↺ بازنشانی</button>
+        <button id="save-btn" class="btn btn-primary">💾 ذخیره تغییرات</button>
+        <a href="index.html" class="btn btn-ghost" target="_blank">👁️ مشاهده سایت</a>
+      </div>
+    </header>
+
+    <!-- برندینگ -->
+    <section class="form-section" id="branding">
+      <h2>🏷️ برندینگ</h2>
+      <p class="section-desc">اطلاعات اصلی سایت شما</p>
+
+      <div class="form-field">
+        <label>عنوان سایت (تب مرورگر)</label>
+        <input type="text" data-key="siteTitle">
+      </div>
+
+      <div class="form-field">
+        <label>متن لوگو</label>
+        <input type="text" data-key="logoText" placeholder="مثلاً: ◆ سایت من">
+      </div>
+
+      <div class="form-field">
+        <label>تصویر لوگو (جایگزین متن لوگو)</label>
+        <div class="upload-row">
+          <input type="text" data-key="logoImage" placeholder="آدرس تصویر یا از فایل انتخاب کن">
+          <input type="file" accept="image/*" data-upload-key="logoImage">
+        </div>
+        <img class="img-preview hidden" data-preview-for="logoImage" alt="">
+        <small>اگر تصویر بذاری، جای متن لوگو نمایش داده می‌شه. حداکثر ۳۰۰ کیلوبایت.</small>
+      </div>
+
+      <div class="form-field">
+        <label>متن فوتر</label>
+        <textarea data-key="footerText" rows="2"></textarea>
+      </div>
+    </section>
+
+    <!-- رنگ‌ها -->
+    <section class="form-section" id="colors">
+      <h2>🎨 رنگ‌ها</h2>
+      <p class="section-desc">تم رنگی سایت رو تغییر بده</p>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>رنگ اصلی</label>
+          <div class="color-field">
+            <input type="color" data-color-key="colorPrimary">
+            <input type="text" data-key="colorPrimary" maxlength="7">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>رنگ ثانویه (گرادیانت)</label>
+          <div class="color-field">
+            <input type="color" data-color-key="colorSecondary">
+            <input type="text" data-key="colorSecondary" maxlength="7">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>پس‌زمینه اصلی</label>
+          <div class="color-field">
+            <input type="color" data-color-key="colorBg">
+            <input type="text" data-key="colorBg" maxlength="7">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>پس‌زمینه ثانویه</label>
+          <div class="color-field">
+            <input type="color" data-color-key="colorBg2">
+            <input type="text" data-key="colorBg2" maxlength="7">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>رنگ کارت‌ها</label>
+          <div class="color-field">
+            <input type="color" data-color-key="colorCard">
+            <input type="text" data-key="colorCard" maxlength="7">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>رنگ متن</label>
+          <div class="color-field">
+            <input type="color" data-color-key="colorText">
+            <input type="text" data-key="colorText" maxlength="7">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>رنگ متن کم‌رنگ</label>
+        <div class="color-field">
+          <input type="color" data-color-key="colorMuted">
+          <input type="text" data-key="colorMuted" maxlength="7">
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero -->
+    <section class="form-section" id="hero">
+      <h2>📝 صفحه اصلی - بخش اول</h2>
+      <p class="section-desc">متن‌های اصلی که در بالای صفحه دیده می‌شن</p>
+
+      <div class="form-field">
+        <label>متن Badge بالای عنوان</label>
+        <input type="text" data-key="heroBadge">
+      </div>
+
+      <div class="form-field">
+        <label>عنوان اصلی (HTML مجاز است)</label>
+        <textarea data-key="heroTitle" rows="3" style="direction:ltr;text-align:left;font-family:monospace;font-size:0.85rem;"></textarea>
+        <small>برای رنگی کردن بخشی از عنوان، آن را داخل &lt;span class="grad-text"&gt;...&lt;/span&gt; بگذار</small>
+      </div>
+
+      <div class="form-field">
+        <label>توضیحات زیر عنوان</label>
+        <textarea data-key="heroDesc" rows="3"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>متن دکمه اصلی</label>
+          <input type="text" data-key="heroBtn1">
+        </div>
+        <div class="form-field">
+          <label>متن دکمه دوم</label>
+          <input type="text" data-key="heroBtn2">
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>تصویر پس‌زمینه Hero (اختیاری)</label>
+        <div class="upload-row">
+          <input type="text" data-key="heroBgImage" placeholder="آدرس تصویر یا از فایل انتخاب کن">
+          <input type="file" accept="image/*" data-upload-key="heroBgImage">
+        </div>
+        <img class="img-preview hidden" data-preview-for="heroBgImage" alt="">
+        <small>پیشنهاد: تصویر افقی، حداکثر ۳۰۰ کیلوبایت.</small>
+      </div>
+    </section>
+
+    <!-- بخش‌ها -->
+    <section class="form-section" id="sections">
+      <h2>👁️ نمایش بخش‌ها</h2>
+      <p class="section-desc">می‌تونی هر بخش رو خاموش/روشن کنی</p>
+
+      <div class="toggle-row">
+        <span class="toggle-label">بخش ویژگی‌ها</span>
+        <label class="toggle-switch"><input type="checkbox" data-key="showFeatures"></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">بخش دموی زنده</span>
+        <label class="toggle-switch"><input type="checkbox" data-key="showDemo"></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">بخش گالری قالب‌ها</span>
+        <label class="toggle-switch"><input type="checkbox" data-key="showShowcase"></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">بخش مراحل (تایم‌لاین)</span>
+        <label class="toggle-switch"><input type="checkbox" data-key="showSteps"></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">بخش آمار</span>
+        <label class="toggle-switch"><input type="checkbox" data-key="showStats"></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">بخش CTA پایانی</span>
+        <label class="toggle-switch"><input type="checkbox" data-key="showCTA"></label>
+      </div>
+    </section>
+
+    <!-- تماس -->
+    <section class="form-section" id="contact">
+      <h2>📞 اطلاعات تماس</h2>
+      <p class="section-desc">در صفحه تماس با ما نمایش داده می‌شه</p>
+
+      <div class="form-field">
+        <label>ایمیل</label>
+        <input type="email" data-key="contactEmail" placeholder="example@email.com" style="direction:ltr;text-align:left;">
+      </div>
+
+      <div class="form-field">
+        <label>تلفن</label>
+        <input type="text" data-key="contactPhone">
+      </div>
+
+      <div class="form-field">
+        <label>آدرس</label>
+        <textarea data-key="contactAddress" rows="2"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label>ساعات کاری</label>
+        <input type="text" data-key="contactHours">
+      </div>
+    </section>
+
+    <!-- آمار -->
+    <section class="form-section" id="stats">
+      <h2>📊 آمار</h2>
+      <p class="section-desc">اعداد و برچسب‌های بخش آمار</p>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>عدد اول</label>
+          <input type="number" data-key="stat1Value">
+        </div>
+        <div class="form-field">
+          <label>برچسب اول</label>
+          <input type="text" data-key="stat1Label">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>عدد دوم</label>
+          <input type="number" data-key="stat2Value">
+        </div>
+        <div class="form-field">
+          <label>برچسب دوم</label>
+          <input type="text" data-key="stat2Label">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>عدد سوم</label>
+          <input type="number" data-key="stat3Value">
+        </div>
+        <div class="form-field">
+          <label>برچسب سوم</label>
+          <input type="text" data-key="stat3Label">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>عدد چهارم</label>
+          <input type="number" data-key="stat4Value">
+        </div>
+        <div class="form-field">
+          <label>برچسب چهارم</label>
+          <input type="text" data-key="stat4Label">
+        </div>
+      </div>
+    </section>
+
+    <!-- پشتیبان‌گیری -->
+    <section class="form-section" id="backup">
+      <h2>💾 پشتیبان‌گیری</h2>
+      <p class="section-desc">ذخیره تنظیمات در فایل یا بارگذاری از فایل</p>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>خروجی گرفتن</label>
+          <button id="export-btn" class="btn btn-ghost" style="width:100%;">📥 دانلود فایل تنظیمات</button>
+          <small>یک فایل JSON از تنظیمات فعلی ذخیره کن</small>
+        </div>
+        <div class="form-field">
+          <label>بارگذاری از فایل</label>
+          <input type="file" accept=".json" id="import-file" style="width:100%;padding:10px;background:var(--bg);border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-size:0.85rem;cursor:pointer;">
+          <small>تنظیمات ذخیره شده را بارگذاری کن</small>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script>
+(function () {
+  // فقط ادمین
+  API.get('/api/admin/me').catch(function () { location.replace('admin-login.html'); });
+
+  var CURRENT = Object.assign({}, window.SITE_DEFAULTS, window.__SERVER_SETTINGS || {});
+  /* ============ بارگذاری مقدارهای فعلی توی فرم ============ */
+  function loadCurrentSettings() { return Object.assign({}, CURRENT); }
+
+  function populateForm(s) {
+    document.querySelectorAll('[data-key]').forEach(function (el) {
+      const key = el.dataset.key;
+      if (!(key in s)) return;
+      if (el.type === 'checkbox') {
+        el.checked = !!s[key];
+        updateToggle(el);
+      } else {
+        el.value = s[key] != null ? s[key] : '';
+      }
+    });
+
+    // color pickers
+    document.querySelectorAll('[data-color-key]').forEach(function (picker) {
+      const key = picker.dataset.colorKey;
+      if (s[key]) picker.value = s[key];
+    });
+
+    // image previews
+    document.querySelectorAll('[data-preview-for]').forEach(function (img) {
+      const key = img.dataset.previewFor;
+      if (s[key]) {
+        img.src = s[key];
+        img.classList.remove('hidden');
+      } else {
+        img.classList.add('hidden');
+      }
+    });
+  }
+
+  /* ============ رنگ: سینک picker و text ============ */
+  document.querySelectorAll('[data-color-key]').forEach(function (picker) {
+    const key = picker.dataset.colorKey;
+    const textInput = document.querySelector('[data-key="' + key + '"]');
+    if (!textInput) return;
+
+    picker.addEventListener('input', function () {
+      textInput.value = picker.value;
+    });
+    textInput.addEventListener('input', function () {
+      if (/^#[0-9a-fA-F]{6}$/.test(textInput.value)) {
+        picker.value = textInput.value;
+      }
+    });
+  });
+
+  /* ============ آپلود تصویر ============ */
+  document.querySelectorAll('[data-upload-key]').forEach(function (fileInput) {
+    fileInput.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 300 * 1024) {
+        showToast('حجم تصویر باید کمتر از ۳۰۰ کیلوبایت باشد', true);
+        fileInput.value = '';
+        return;
+      }
+      const key = fileInput.dataset.uploadKey;
+      const reader = new FileReader();
+      reader.onload = function (ev) {
+        const textInput = document.querySelector('[data-key="' + key + '"]');
+        if (textInput) textInput.value = ev.target.result;
+        const preview = document.querySelector('[data-preview-for="' + key + '"]');
+        if (preview) {
+          preview.src = ev.target.result;
+          preview.classList.remove('hidden');
+        }
+        showToast('تصویر آماده است. برای ذخیره دکمه ذخیره را بزن.');
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  /* ============ Toggle سوییچ‌ها ============ */
+  function updateToggle(input) {
+    const sw = input.closest('.toggle-switch');
+    if (!sw) return;
+    sw.classList.toggle('on', input.checked);
+  }
+  document.querySelectorAll('.toggle-switch input').forEach(function (input) {
+    updateToggle(input);
+    input.addEventListener('change', function () { updateToggle(input); });
+  });
+
+  /* ============ جمع‌آوری مقادیر فرم ============ */
+  function gatherSettings() {
+    const obj = {};
+    document.querySelectorAll('[data-key]').forEach(function (el) {
+      const key = el.dataset.key;
+      let val;
+      if (el.type === 'checkbox') val = el.checked;
+      else if (el.type === 'number') val = parseInt(el.value, 10) || 0;
+      else val = el.value;
+      obj[key] = val;
+    });
+    return obj;
+  }
+
+  /* ============ Toast ============ */
+  let toastTimer;
+  function showToast(msg, isError) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.toggle('error', !!isError);
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2500);
+  }
+
+  /* ============ ذخیره ============ */
+  document.getElementById('save-btn').addEventListener('click', function () {
+    const updated = Object.assign({}, loadCurrentSettings(), gatherSettings());
+    API.put('/api/admin/settings', { site: updated }).then(function () {
+      CURRENT = updated;
+      showToast('✓ تغییرات ذخیره شد. روی «مشاهده سایت» بزن تا ببینی.');
+    }).catch(function (e) {
+      showToast(e.status === 413 ? 'حجم تصاویر زیاد است.' : e.message, true);
+    });
+  });
+
+  /* ============ بازنشانی ============ */
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    if (confirm('همه تغییرات حذف می‌شود و به حالت اولیه برمی‌گردد. مطمئنی؟')) {
+      API.put('/api/admin/settings', { site: {} }).then(function () { location.reload(); })
+        .catch(function (e) { showToast(e.message, true); });
+    }
+  });
+
+  /* ============ خروجی ============ */
+  document.getElementById('export-btn').addEventListener('click', function () {
+    const current = loadCurrentSettings();
+    const data = JSON.stringify(current, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'site-settings-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✓ فایل تنظیمات دانلود شد');
+  });
+
+  /* ============ ورودی ============ */
+  document.getElementById('import-file').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (ev) {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (!data || typeof data !== 'object') throw new Error('bad');
+        API.put('/api/admin/settings', { site: data }).then(function () {
+          showToast('✓ تنظیمات بارگذاری شد. صفحه بازنشانی می‌شود...');
+          setTimeout(function () { location.reload(); }, 800);
+        }).catch(function (e2) { showToast(e2.message, true); });
+      } catch (err) {
+        showToast('فایل نامعتبر است', true);
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  /* ============ اسکرول اسکرول (منوی فعال) ============ */
+  const navLinks = document.querySelectorAll('.admin-nav a');
+  const sections = document.querySelectorAll('.form-section');
+  function updateActiveNav() {
+    let active = null;
+    sections.forEach(function (sec) {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 150 && rect.bottom > 150) active = sec.id;
+    });
+    navLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+    });
+  }
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+
+  /* ============ شروع ============ */
+  populateForm(loadCurrentSettings());
+})();
+</script>
+</body>
+</html>

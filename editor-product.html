@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محصول | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body data-page="product">
+
+<div id="editorRoot"></div>
+
+<template id="pageBody">
+
+<form id="pForm" novalidate autocomplete="off">
+
+  <section class="pp-card">
+    <h2>📦 اطلاعات اصلی</h2>
+    <p class="pp-help">نام و توضیحی که مشتری‌ها می‌بینند.</p>
+
+    <div class="pp-field">
+      <label for="pName"><span><span id="lName">نام</span><b class="req">*</b></span><span class="opt" id="cName"></span></label>
+      <input type="text" id="pName" maxlength="100" autofocus>
+      <div class="pp-err" id="eName">نام را وارد کن.</div>
+    </div>
+
+    <div class="pp-field">
+      <label for="pCat"><span>دسته‌بندی</span><span class="opt">اختیاری</span></label>
+      <input type="text" id="pCat" maxlength="40" list="catList">
+      <datalist id="catList"></datalist>
+    </div>
+
+    <div class="pp-field">
+      <label for="pDesc"><span>توضیح کوتاه</span><span class="opt" id="cDesc"></span></label>
+      <textarea id="pDesc" rows="3" maxlength="300"></textarea>
+    </div>
+  </section>
+
+  <section class="pp-card">
+    <h2>🖼️ تصویر</h2>
+    <p class="pp-help">یک عکس واضح و روشن بهترین نتیجه را می‌دهد. نسبت ۴ به ۳ ایده‌آل است (PNG، JPG، WEBP تا ۵ مگابایت).</p>
+
+    <div class="dz" id="dz" tabindex="0" role="button" aria-label="انتخاب تصویر">
+      <div class="dz-empty" id="dzEmpty"><span class="ic">📷</span>تصویر را اینجا رها کن یا <b>کلیک کن تا انتخاب شود</b><br>می‌توانی تصویر را هم Paste کنی</div>
+      <img id="dzImg" class="hidden" alt="">
+      <div class="dz-tools hidden" id="dzTools">
+        <button type="button" id="dzChange">تغییر تصویر</button>
+        <button type="button" class="del" id="dzRemove">حذف</button>
+      </div>
+      <div class="dz-busy"><div class="spin"></div>در حال آپلود…</div>
+    </div>
+    <input type="file" id="fileIn" accept="image/png,image/jpeg,image/gif,image/webp" hidden>
+    <button type="button" class="pp-link-toggle" id="linkToggle">یا با آدرس اینترنتی (لینک) اضافه کن</button>
+    <div class="pp-link-box hidden" id="linkBox">
+      <input type="text" id="pImgUrl" placeholder="https://…" style="direction:ltr;text-align:left;">
+      <div class="pp-err" id="eImg">آدرس باید با https:// شروع شود.</div>
+    </div>
+  </section>
+
+  <section class="pp-card" id="priceCard">
+    <h2>💰 قیمت</h2>
+    <p class="pp-help">فقط عدد وارد کن؛ جداکننده‌ی هزارگان خودکار گذاشته می‌شود.</p>
+    <div class="pp-row">
+      <div class="pp-field">
+        <label for="pPrice"><span>قیمت فروش<b class="req">*</b></span></label>
+        <div class="pp-money"><input type="text" id="pPrice" inputmode="numeric" placeholder="۰"><em>تومان</em></div>
+        <div class="pp-words" id="wPrice"></div>
+        <div class="pp-err" id="ePrice">قیمت را وارد کن.</div>
+      </div>
+      <div class="pp-field">
+        <label for="pOld"><span>قیمت قبل از تخفیف</span><span class="opt">اختیاری</span></label>
+        <div class="pp-money"><input type="text" id="pOld" inputmode="numeric" placeholder="۰"><em>تومان</em></div>
+        <div class="pp-words" id="wOld"></div>
+        <div class="pp-err" id="eOld">این قیمت باید بیشتر از قیمت فروش باشد.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pp-card">
+    <h2>⚙️ وضعیت</h2>
+    <p class="pp-help">&nbsp;</p>
+    <label class="sw"><span class="tx"><b id="lAvail">موجود</b><span id="hAvail">اگر خاموش باشد، روی کارت «ناموجود» نوشته می‌شود.</span></span>
+      <input type="checkbox" id="pAvail" checked><span class="knob"></span></label>
+    <label class="sw"><span class="tx"><b>نمایش در سایت</b><span>اگر خاموش باشد، ذخیره می‌شود ولی در سایت دیده نمی‌شود (پیش‌نویس).</span></span>
+      <input type="checkbox" id="pVisible" checked><span class="knob"></span></label>
+  </section>
+
+  <div class="pp-bar">
+    <button type="submit" class="btn btn-primary" id="btnSave">💾 ذخیره</button>
+    <button type="button" class="btn btn-ghost" id="btnAgain">ذخیره و افزودن بعدی</button>
+    <span class="grow"></span>
+    <a class="btn btn-ghost" id="btnCancel" data-nav-skip href="editor-products.html">انصراف</a>
+  </div>
+</form>
+
+<aside data-slot="side" class="pp-side">
+  <div class="pp-live">
+    <div class="pp-live-title"><span>پیش‌نمایش در سایت</span><span>همین‌طور که تایپ می‌کنی</span></div>
+    <div class="editor-preview-content" id="liveCard" style="max-height:none;background:transparent"></div>
+  </div>
+  <div class="pp-tips"><b>چک‌لیست</b><ul id="tips"></ul></div>
+</aside>
+
+</template>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/editor-core.js"></script>
+<script>
+
+Editor.start('product', {
+  title: 'محصول', save: false, needsProducts: true, preview: false,
+  back: { href: 'editor-products.html', label: 'بازگشت به لیست' },
+  onSaveShortcut: function () { document.getElementById('pForm').requestSubmit(); },
+  ready: function (E) {
+    var L = E.labels(), MAX = 100;
+    var $ = function (id) { return document.getElementById(id); };
+    var q = new URLSearchParams(location.search);
+    var editingId = q.get('pid');
+    var current = null;
+    if (editingId) {
+      current = E.editor.products.find(function (p) { return p.id === editingId; });
+      if (!current) { E.toast('این مورد پیدا نشد', true); setTimeout(function () { location.href = E.url('editor-products.html'); }, 900); return; }
+    }
+
+    var F = { price: null, oldPrice: null, image: '' };
+    var formDirty = false, busy = false, uploading = false;
+
+    /* ----- متن‌ها بر اساس قالب ----- */
+    function setTitle() {
+      var t = (editingId ? 'ویرایش ' : 'افزودن ') + L.noun;
+      $('edTitle').textContent = t;
+      $('edSub').textContent = E.site.name;
+      document.title = t + ' | ' + E.site.name;
+    }
+    setTitle();
+    $('lName').textContent = L.name;
+    $('pName').placeholder = L.namePh;
+    $('pDesc').placeholder = L.descPh;
+    $('pCat').placeholder = L.catPh;
+    $('lAvail').textContent = L.stock;
+    $('hAvail').textContent = 'اگر خاموش باشد، روی کارت «' + L.stockOff + '» نوشته می‌شود.';
+    $('priceCard').style.display = L.hasPrice ? '' : 'none';
+    $('btnCancel').href = E.url('editor-products.html');
+    $('btnAgain').style.display = editingId ? 'none' : '';
+    var cats = {};
+    E.editor.products.forEach(function (p) { if (p.category) cats[p.category] = 1; });
+    $('catList').innerHTML = Object.keys(cats).map(function (c) { return '<option value="' + E.esc(c) + '">'; }).join('');
+
+    /* ----- پول ----- */
+    function parseMoney(s) { var d = E.toLatin(s).replace(/[^\d]/g, ''); return d ? Math.min(parseInt(d, 10), 1e10) : null; }
+    function compact(n) {
+      if (!n) return '';
+      var f = function (v) { return (+v.toFixed(2)).toLocaleString('fa-IR'); };
+      if (n >= 1e9) return '≈ ' + f(n / 1e9) + ' میلیارد تومان';
+      if (n >= 1e6) return '≈ ' + f(n / 1e6) + ' میلیون تومان';
+      if (n >= 1e3) return '≈ ' + f(n / 1e3) + ' هزار تومان';
+      return '';
+    }
+    function bindMoney(input, key, wordsEl) {
+      input.addEventListener('input', function () {
+        var fromEnd = input.value.length - (input.selectionStart == null ? input.value.length : input.selectionStart);
+        var n = parseMoney(input.value);
+        input.value = n == null ? '' : n.toLocaleString('fa-IR');
+        var pos = Math.max(0, input.value.length - fromEnd);
+        try { input.setSelectionRange(pos, pos); } catch (e) {}
+        F[key] = n; wordsEl.textContent = compact(n);
+        input.classList.remove('invalid'); $(key === 'price' ? 'ePrice' : 'eOld').classList.remove('show');
+        changed();
+      });
+    }
+    bindMoney($('pPrice'), 'price', $('wPrice'));
+    bindMoney($('pOld'), 'oldPrice', $('wOld'));
+
+    /* ----- تصویر ----- */
+    var dz = $('dz');
+    function paintImage() {
+      var u = E.safeImg(F.image);
+      $('dzImg').classList.toggle('hidden', !u);
+      $('dzEmpty').classList.toggle('hidden', !!u);
+      $('dzTools').classList.toggle('hidden', !u);
+      dz.classList.toggle('has', !!u);
+      if (u) $('dzImg').src = u;
+    }
+    function handleFile(file) {
+      if (!file || uploading) return;
+      uploading = true; dz.classList.add('busy');
+      E.upload(file).then(function (u) {
+        if (u) { F.image = u; $('pImgUrl').value = ''; $('eImg').classList.remove('show'); paintImage(); changed(); }
+      }).finally(function () { uploading = false; dz.classList.remove('busy'); });
+    }
+    function pick() { if (!uploading) $('fileIn').click(); }
+    dz.addEventListener('click', function (e) { if (!dz.classList.contains('has') && !e.target.closest('button')) pick(); });
+    dz.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !dz.classList.contains('has')) { e.preventDefault(); pick(); } });
+    $('dzChange').addEventListener('click', function (e) { e.stopPropagation(); pick(); });
+    $('dzRemove').addEventListener('click', function (e) { e.stopPropagation(); F.image = ''; paintImage(); changed(); });
+    $('fileIn').addEventListener('change', function (e) { handleFile(e.target.files[0]); e.target.value = ''; });
+    ['dragenter', 'dragover'].forEach(function (n) { dz.addEventListener(n, function (e) { e.preventDefault(); dz.classList.add('drag'); }); });
+    ['dragleave', 'drop'].forEach(function (n) { dz.addEventListener(n, function (e) { e.preventDefault(); dz.classList.remove('drag'); }); });
+    dz.addEventListener('drop', function (e) { handleFile(e.dataTransfer && e.dataTransfer.files[0]); });
+    document.addEventListener('paste', function (e) {
+      var items = (e.clipboardData && e.clipboardData.items) || [];
+      for (var i = 0; i < items.length; i++) if (items[i].kind === 'file' && /^image\//.test(items[i].type)) { handleFile(items[i].getAsFile()); e.preventDefault(); return; }
+    });
+    $('linkToggle').addEventListener('click', function () { $('linkBox').classList.toggle('hidden'); $('pImgUrl').focus(); });
+    $('pImgUrl').addEventListener('input', function () {
+      var v = this.value.trim();
+      if (!v) { $('eImg').classList.remove('show'); return; }
+      var ok = !!E.safeImg(v) && !/^data:/.test(v);
+      $('eImg').classList.toggle('show', !ok);
+      if (ok) { F.image = v; paintImage(); changed(); }
+    });
+
+    /* ----- پیش‌نمایش و چک‌لیست ----- */
+    function draft() {
+      return {
+        name: $('pName').value.trim(), category: $('pCat').value.trim(), desc: $('pDesc').value.trim(),
+        price: F.price || 0, oldPrice: F.oldPrice || 0, image: F.image,
+        available: $('pAvail').checked, visible: $('pVisible').checked
+      };
+    }
+    function changed() { formDirty = true; paintLive(); }
+    function paintLive() {
+      var d = draft(), ed = E.editor;
+      var box = $('liveCard');
+      box.style.setProperty('--p', ed.primaryColor); box.style.setProperty('--s', ed.secondaryColor);
+      box.innerHTML = '<div style="max-width:240px;margin:0 auto">' + E.productCardHtml(d, L.icon) + '</div>';
+      $('cName').textContent = d.name.length.toLocaleString('fa-IR') + ' / ' + (100).toLocaleString('fa-IR');
+      $('cDesc').textContent = d.desc.length.toLocaleString('fa-IR') + ' / ' + (300).toLocaleString('fa-IR');
+      var off = d.oldPrice > d.price && d.price > 0 ? Math.round((1 - d.price / d.oldPrice) * 100) : 0;
+      $('wOld').textContent = off ? '٪' + off.toLocaleString('fa-IR') + ' تخفیف نمایش داده می‌شود' : compact(F.oldPrice);
+      var tips = [[!!d.name, 'نام را وارد کن'], [!!d.image, 'یک تصویر اضافه کن (فروش را بیشتر می‌کند)']];
+      if (L.hasPrice) tips.push([F.price != null && F.price > 0, 'قیمت را وارد کن']);
+      tips.push([!!d.desc, 'یک توضیح کوتاه بنویس (اختیاری)']);
+      $('tips').innerHTML = tips.map(function (t) { return '<li class="' + (t[0] ? 'ok' : '') + '">' + t[1] + '</li>'; }).join('');
+    }
+    ['pName', 'pCat', 'pDesc', 'pAvail', 'pVisible'].forEach(function (id) {
+      $(id).addEventListener('input', function () { this.classList.remove('invalid'); if (id === 'pName') $('eName').classList.remove('show'); changed(); });
+      $(id).addEventListener('change', changed);
+    });
+
+    /* ----- پر کردن فرم ----- */
+    function fill(p) {
+      p = p || {};
+      $('pName').value = p.name || ''; $('pCat').value = p.category || ''; $('pDesc').value = p.desc || '';
+      F.price = p.price > 0 ? p.price : null; F.oldPrice = p.oldPrice > 0 ? p.oldPrice : null; F.image = p.image || '';
+      $('pPrice').value = F.price ? F.price.toLocaleString('fa-IR') : ''; $('wPrice').textContent = compact(F.price);
+      $('pOld').value = F.oldPrice ? F.oldPrice.toLocaleString('fa-IR') : '';
+      $('pAvail').checked = p.available !== false; $('pVisible').checked = p.visible !== false;
+      ['pName', 'pPrice', 'pOld'].forEach(function (i) { $(i).classList.remove('invalid'); });
+      ['eName', 'ePrice', 'eOld', 'eImg'].forEach(function (i) { $(i).classList.remove('show'); });
+      paintImage(); paintLive(); formDirty = false;
+    }
+    fill(current);
+
+    /* Enter در فیلدهای تک‌خطی ذخیره نمی‌کند؛ به فیلد بعدی می‌رود */
+    $('pForm').addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
+      e.preventDefault();
+      var f = Array.prototype.filter.call($('pForm').querySelectorAll('input:not([hidden]):not([type=checkbox]), textarea'), function (x) { return x.offsetParent !== null; });
+      var i = f.indexOf(e.target); if (f[i + 1]) f[i + 1].focus();
+    });
+
+    /* ----- اعتبارسنجی و ذخیره ----- */
+    function validate() {
+      var first = null;
+      function bad(inputId, errId) { $(inputId).classList.add('invalid'); $(errId).classList.add('show'); if (!first) first = $(inputId); }
+      if (!$('pName').value.trim()) bad('pName', 'eName');
+      if (L.hasPrice) {
+        if (F.price == null) bad('pPrice', 'ePrice');
+        if (F.oldPrice != null && F.price != null && F.oldPrice <= F.price) bad('pOld', 'eOld');
+      }
+      return first;
+    }
+    function setBusy(on) {
+      busy = on;
+      $('btnSave').disabled = on || uploading; $('btnAgain').disabled = on || uploading;
+      $('btnSave').textContent = on ? 'در حال ذخیره…' : '💾 ذخیره';
+    }
+
+    function commit(again) {
+      if (busy) return;
+      if (E.readOnly) { E.toast('حالت مشاهده (ادمین): امکان ذخیره وجود ندارد.', true); return; }
+      if (uploading) { E.toast('صبر کن تا آپلود تصویر تمام شود', true); return; }
+      var bad = validate();
+      if (bad) { bad.focus(); bad.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+      if (!editingId && E.editor.products.length >= MAX) { E.toast('به سقف ' + MAX.toLocaleString('fa-IR') + ' مورد رسیده‌ای', true); return; }
+
+      var d = draft();
+      var prod = {
+        id: editingId || ('P-' + Date.now()),
+        name: d.name, category: d.category, desc: d.desc, image: d.image,
+        price: L.hasPrice ? (F.price || 0) : 0,
+        oldPrice: L.hasPrice && F.oldPrice > (F.price || 0) ? F.oldPrice : 0,
+        available: d.available, visible: d.visible
+      };
+      var before = E.editor.products.slice();
+      if (editingId) { E.editor.products = before.map(function (p) { return p.id === editingId ? prod : p; }); }
+      else { E.editor.products = before.concat([prod]); }
+
+      setBusy(true);
+      E.save({ silent: true }).then(function () {
+        formDirty = false;
+        if (again) {
+          editingId = null; current = null; setTitle(); $('btnAgain').style.display = '';
+          history.replaceState(null, '', E.url('editor-product.html'));
+          fill(null); setBusy(false);
+          E.toast('✓ ذخیره شد — ' + L.noun + ' بعدی را وارد کن');
+          $('pName').focus(); window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          location.href = E.url('editor-products.html', { done: editingId ? 'edit' : 'add' });
+        }
+      }).catch(function () { E.editor.products = before; setBusy(false); });
+    }
+    $('pForm').addEventListener('submit', function (e) { e.preventDefault(); commit(false); });
+    $('btnAgain').addEventListener('click', function () { commit(true); });
+
+    /* خروج با تغییرات ذخیره‌نشده */
+    window.addEventListener('beforeunload', function (e) { if (formDirty && !busy) { e.preventDefault(); e.returnValue = ''; } });
+    document.querySelectorAll('a[data-nav], a[data-nav-skip]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        if (formDirty && !confirm('تغییرات ذخیره نشده است. بدون ذخیره خارج می‌شوی؟')) { e.preventDefault(); e.stopImmediatePropagation(); }
+        else formDirty = false;
+      }, true);
+    });
+    if (!editingId) $('pName').focus();
+  }
+});
+
+</script>
+</body>
+</html>

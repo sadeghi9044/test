@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>کتابخانه فایل‌ها | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body data-page="files">
+
+<div id="editorRoot"></div>
+
+<template id="pageBody">
+
+<section class="editor-section" style="padding:20px">
+  <div class="fl-bar">
+    <div class="info" id="flInfo"></div>
+    <label class="btn btn-primary" style="cursor:pointer">➕ آپلود تصویر<input type="file" id="flFile" accept="image/*" multiple hidden></label>
+  </div>
+  <div class="fl-grid" id="flGrid"></div>
+</section>
+
+<div class="ed-modal" id="delModal">
+  <div class="box">
+    <h3>حذف شود؟</h3>
+    <p>این تصویر برای همیشه پاک می‌شود.</p>
+    <div class="acts">
+      <button type="button" class="btn btn-ghost" id="delNo">انصراف</button>
+      <button type="button" class="btn btn-danger-solid" id="delYes">بله، حذف شود</button>
+    </div>
+  </div>
+</div>
+
+</template>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/editor-core.js"></script>
+<script>
+
+Editor.start('files', {
+  title: 'کتابخانه فایل‌ها', sub: 'تصویرهای آپلودشده‌ی تو', save: false, preview: false,
+  ready: function (E) {
+    var grid = document.getElementById('flGrid'), info = document.getElementById('flInfo'), pending = null, files = [], quota = {};
+    if (E.readOnly) { grid.innerHTML = '<div class="pl-empty"><p>در حالت مشاهده‌ی ادمین، کتابخانه‌ی فایل‌ها در دسترس نیست.</p></div>'; info.textContent = ''; document.getElementById('flFile').parentNode.style.display = 'none'; return; }
+    function mb(n) { return (n / 1048576).toLocaleString('fa-IR', { maximumFractionDigits: 1 }); }
+    function paint() {
+      var total = files.reduce(function (s, f) { return s + f.size; }, 0);
+      info.textContent = E.fmtMoney(files.length) + ' فایل از ' + E.fmtMoney(quota.files || 300) + ' — ' + mb(total) + ' از ' + mb(quota.bytes || 0) + ' مگابایت';
+      if (!files.length) { grid.innerHTML = '<div class="pl-empty" style="grid-column:1/-1"><div class="big">🗂️</div><p>هنوز تصویری آپلود نکرده‌ای.</p></div>'; return; }
+      grid.innerHTML = files.map(function (f, i) {
+        return '<div class="fl-item"><div class="im"><img src="' + E.esc(f.url) + '" alt="" loading="lazy"></div><div class="bar">' +
+          '<span>' + (f.used ? '<span class="tag sale">در سایت</span>' : mb(f.size) + ' MB') + '</span>' +
+          '<button type="button" data-copy="' + i + '" title="کپی آدرس">🔗</button>' +
+          '<button type="button" class="del" data-del="' + i + '" title="حذف"' + (f.used ? ' disabled style="opacity:.3;cursor:not-allowed"' : '') + '>🗑️</button></div></div>';
+      }).join('');
+    }
+    function load() {
+      return API.get('/api/uploads').then(function (r) { files = r.files; quota = r.quota; paint(); })
+        .catch(function (e) { E.toast(e.message || 'بارگذاری فهرست انجام نشد', true); });
+    }
+    document.getElementById('flFile').addEventListener('change', function (ev) {
+      var list = Array.prototype.slice.call(ev.target.files); ev.target.value = '';
+      if (!list.length) return;
+      E.toast('در حال آپلود…');
+      list.reduce(function (p, f) { return p.then(function () { return E.upload(f); }); }, Promise.resolve()).then(function () { return load(); }).then(function () { E.toast('✓ آپلود انجام شد'); });
+    });
+    grid.addEventListener('click', function (ev) {
+      var c = ev.target.closest('[data-copy]'), d = ev.target.closest('[data-del]');
+      if (c) {
+        var u = location.origin + files[+c.dataset.copy].url;
+        (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(function () { E.toast('✓ آدرس کپی شد'); }, function () { prompt('آدرس تصویر:', u); });
+      } else if (d && !d.disabled) { pending = files[+d.dataset.del]; document.getElementById('delModal').classList.add('show'); }
+    });
+    var modal = document.getElementById('delModal');
+    document.getElementById('delNo').addEventListener('click', function () { modal.classList.remove('show'); pending = null; });
+    modal.addEventListener('click', function (e) { if (e.target === modal) modal.classList.remove('show'); });
+    document.getElementById('delYes').addEventListener('click', function () {
+      modal.classList.remove('show'); var f = pending; pending = null; if (!f) return;
+      API.del('/api/uploads/' + encodeURIComponent(f.name)).then(function () { E.toast('✓ حذف شد'); return load(); })
+        .catch(function (e) { E.toast(e.message || 'حذف انجام نشد', true); });
+    });
+    load();
+  }
+});
+
+</script>
+</body>
+</html>

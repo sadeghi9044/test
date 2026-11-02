@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>در حال ساخت سایت | سایت‌ساز</title>
+<meta name="description" content="در حال ساخت سایت">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<meta name="robots" content="noindex">
+</head>
+<body>
+
+<nav id="navbar"><div class="nav-inner"><a href="index.html" class="logo">◆ سایت‌ساز</a><a href="dashboard.html" class="btn btn-ghost nav-cta">داشبورد</a></div></nav>
+<style>
+.bd{max-width:520px;margin:120px auto;padding:0 16px;text-align:center}
+.bd-card{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:28px}
+.bd-track{height:10px;border-radius:5px;background:rgba(255,255,255,.12);overflow:hidden;margin:18px 0 10px}
+.bd-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8b5cf6,#ec4899);transition:width .5s}
+.bd small{color:var(--muted)}
+</style>
+<main class="bd"><div class="bd-card">
+<h2 id="title">در حال ساخت سایت…</h2>
+<div class="bd-track"><i id="fill"></i></div>
+<div><b id="pct">۰٪</b> · <span id="label">آماده‌سازی</span></div>
+<small id="attempt"></small>
+<p id="msg" style="color:#f87171;margin-top:14px"></p>
+<div id="actions" style="margin-top:14px;display:none"><a href="wizard.html" class="btn btn-primary">بازگشت به ویزارد</a></div>
+</div></main>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script>
+var id = new URLSearchParams(location.search).get('id');
+var fa = function (n) { return Number(n).toLocaleString('fa-IR'); };
+function poll() {
+  API.get('/api/builds/' + encodeURIComponent(id)).then(function (r) {
+    var b = r.build;
+    document.getElementById('fill').style.width = b.progress + '%';
+    document.getElementById('pct').textContent = fa(b.progress) + '٪';
+    document.getElementById('label').textContent = b.stepLabel || '';
+    document.getElementById('attempt').textContent = 'تلاش ' + fa(b.attempt) + ' از ' + fa(b.maxAttempts);
+    if (b.status === 'done') {
+      document.getElementById('title').textContent = 'سایتت آماده شد 🎉';
+      setTimeout(function () { location.href = 'site-editor.html?id=' + encodeURIComponent(b.siteId); }, 900);
+    } else if (b.status === 'failed') {
+      document.getElementById('title').textContent = 'ساخت سایت انجام نشد';
+      document.getElementById('msg').textContent = b.error;
+      document.getElementById('actions').style.display = 'block';
+    } else setTimeout(poll, 1000);
+  }).catch(function (e) {
+    if (e.status === 401) return location.replace('login.html?next=dashboard.html');
+    if (e.status === 404) { document.getElementById('msg').textContent = e.message; document.getElementById('actions').style.display = 'block'; return; }
+    setTimeout(poll, 2000);
+  });
+}
+if (!id) location.replace('wizard.html'); else poll();
+</script>
+</body>
+</html>

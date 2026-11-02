@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ویرایش سایت | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body data-page="overview">
+
+<div id="editorRoot"></div>
+
+<template id="pageBody">
+
+<div id="ovCta"></div>
+
+<section class="editor-section">
+  <h2>🏠 وضعیت سایت شما</h2>
+  <p class="editor-desc">هر بخش را جداگانه ویرایش کنید. تغییرات هر صفحه با دکمه‌ی «ذخیره» ثبت می‌شود و هنگام رفتن به صفحه‌ی دیگر هم خودکار ذخیره می‌شود.</p>
+  <div class="ov-progress"><div class="ov-bar"><i id="ovBar" style="width:0"></i></div><b id="ovPct">۰٪</b></div>
+  <div class="ov-cards" id="ovCards"></div>
+</section>
+
+<div class="ov-danger">
+  <span>بازگرداندن ظاهر و متن‌ها به حالت اولیه (محصولات و قالب انتخابی شما حفظ می‌شود).</span>
+  <button type="button" class="btn btn-danger" id="resetBtn">↺ بازنشانی تنظیمات</button>
+</div>
+
+</template>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/editor-core.js"></script>
+<script>
+
+Editor.start('overview', {
+  title: 'نمای کلی',
+  ready: function (E) {
+    var ed = E.editor, d = E.defaults;
+    function changed(keys) { return keys.some(function (k) { return String(ed[k] || '') !== String(d[k] || ''); }); }
+    function render() {
+      ed = E.editor;
+      var hasP = E.isProductTpl(), L = E.labels();
+      var items = [
+        { href: 'editor-design.html', ic: '🎨', t: 'ظاهر و برند', d: 'قالب، نام و لوگو، رنگ‌های سایت', done: changed(['logoText', 'logoImage', 'tagline', 'primaryColor', 'secondaryColor', 'bgColor', 'textColor']) || ed.template !== (E.site.template || 'business') },
+        { href: 'editor-content.html', ic: '📝', t: 'صفحه اصلی', d: ed.template === 'business' ? 'عنوان، توضیح، دکمه و ویژگی‌ها' : 'عنوان، توضیح و دکمه‌ی اصلی', done: changed(['heroTitle', 'heroDesc', 'heroBtnText', 'heroBgImage', 'feat1Title', 'feat2Title', 'feat3Title']) }
+      ];
+      items.push({ href: 'editor-sections.html', ic: '🧩', t: 'چیدمان بخش‌ها', d: 'ترتیب و نمایش بخش‌های سایت', done: JSON.stringify(ed.sections) !== JSON.stringify(d.sections) });
+      if (hasP) items.push({ href: 'editor-products.html', ic: L.icon, t: L.list, d: ed.products.length ? E.fmtMoney(ed.products.length) + ' مورد ثبت شده' : L.empty, done: ed.products.length > 0 });
+      items.push({ href: 'editor-contact.html', ic: '📞', t: 'تماس', d: 'ایمیل، تلفن و آدرس', done: changed(['contactEmail', 'contactPhone', 'contactAddress']) });
+      items.push({ href: 'editor-seo.html', ic: '🔍', t: 'سئو', d: 'نمایش سایت در نتایج گوگل', done: changed(['seoTitle', 'seoDescription', 'seoKeywords']) });
+
+      document.getElementById('ovCards').innerHTML = items.map(function (i) {
+        return '<a class="ov-card" data-nav href="' + E.esc(E.url(i.href)) + '"><div class="ic">' + i.ic + '</div><b>' + E.esc(i.t) + '</b><span>' + E.esc(i.d) + '</span>' +
+          '<div class="st ' + (i.done ? 'done' : '') + '">' + (i.done ? '✓ ویرایش شده' : '○ هنوز دست نخورده') + '</div></a>';
+      }).join('');
+      var n = items.filter(function (i) { return i.done; }).length, pct = Math.round(n / items.length * 100);
+      document.getElementById('ovBar').style.width = pct + '%';
+      document.getElementById('ovPct').textContent = pct.toLocaleString('fa-IR') + '٪';
+
+      document.getElementById('ovCta').innerHTML = hasP ?
+        '<div class="ov-cta"><div class="tx"><b>' + E.esc(L.add) + '</b><span>اضافه کردن ' + E.esc(L.noun) + ' فقط چند ثانیه طول می‌کشد.</span></div>' +
+        '<a class="btn btn-primary" data-nav href="' + E.esc(E.url('editor-product.html')) + '">➕ ' + E.esc(L.add) + '</a></div>' : '';
+    }
+    render();
+    document.getElementById('resetBtn').addEventListener('click', function () {
+      if (E.readOnly) { E.toast('حالت مشاهده (ادمین): امکان تغییر وجود ندارد.', true); return; }
+      if (!confirm('ظاهر و متن‌های سایت به حالت اولیه برگردد؟ (محصولات حفظ می‌شود)')) return;
+      E.resetAll();
+      E.save().then(function () { render(); E.renderPreview(); }).catch(function () {});
+    });
+  }
+});
+
+</script>
+</body>
+</html>

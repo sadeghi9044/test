@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ثبت‌نام | سایت‌ساز</title>
+<meta name="description" content="حساب سایت‌ساز بساز و سایت خودت رو در چند دقیقه راه‌اندازی کن.">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+</head>
+<body data-mode="signup">
+
+<div class="auth-page">
+
+  <aside class="auth-side">
+    <a href="index.html" class="auth-side-logo">◆ سایت‌ساز</a>
+    <div class="auth-side-content">
+      <h1>سایت خودت رو<br>در چند دقیقه بساز</h1>
+      <p>بدون نیاز به کدنویسی. یک قالب انتخاب کن، متن‌ها رو بنویس، و سایتت آماده‌ست.</p>
+      <ul class="auth-features">
+        <li>شروع رایگان، بدون نیاز به کارت بانکی</li>
+        <li>قالب‌های حرفه‌ای آماده</li>
+        <li>ورود امن با کد پیامکی، بدون رمز عبور</li>
+        <li>پشتیبانی فارسی</li>
+      </ul>
+    </div>
+    <div class="auth-side-footer">© ۱۴۰۵ سایت‌ساز — تمامی حقوق محفوظ است.</div>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-form-wrap">
+      <a href="index.html" class="auth-back">← بازگشت به خانه</a>
+      <h2 id="authTitle">ساخت حساب جدید</h2>
+      <p id="authSub">فقط چند ثانیه وقت می‌گیره. با شماره موبایلت شروع کن.</p>
+
+      <div id="authMessage" class="auth-message" role="alert"></div>
+
+      <!-- مرحله ۱: شماره موبایل -->
+      <form id="phoneForm" novalidate>
+        <div class="auth-field">
+          <label for="ph-name">نام و نام خانوادگی</label>
+          <input type="text" id="ph-name" name="name" placeholder="مثلاً علی احمدی" autocomplete="name" maxlength="60" required>
+          <div class="auth-field-error" data-for="ph-name">نام خودت را وارد کن</div>
+        </div>
+        <div class="auth-field">
+          <label for="ph-phone">شماره موبایل</label>
+          <input type="tel" id="ph-phone" name="phone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" autocomplete="tel" inputmode="numeric" maxlength="16" required class="ltr-input">
+          <div class="auth-field-error" data-for="ph-phone">شماره موبایل معتبر وارد کن (مثل ۰۹۱۲۳۴۵۶۷۸۹)</div>
+        </div>
+        <div class="auth-checkbox-row">
+          <label class="auth-checkbox">
+            <input type="checkbox" id="ph-terms">
+            <span>با <a href="terms-of-service.html" target="_blank">قوانین و شرایط</a> و <a href="privacy.html" target="_blank">حریم خصوصی</a> موافقم.</span>
+          </label>
+        </div>
+        <button type="submit" class="auth-btn" id="sendBtn">دریافت کد تأیید</button>
+      </form>
+
+      <!-- مرحله ۲: کد پیامکی -->
+      <form id="codeForm" novalidate hidden>
+        <div class="auth-field">
+          <label for="cd-code">کد ۶ رقمی ارسال‌شده به <b id="sentTo" dir="ltr"></b></label>
+          <input type="text" id="cd-code" name="code" class="otp-input" placeholder="------" autocomplete="one-time-code" inputmode="numeric" maxlength="8" required>
+          <div class="auth-field-error" data-for="cd-code">کد ۶ رقمی را وارد کن</div>
+        </div>
+        <div class="auth-field" id="lateNameWrap" hidden>
+          <label for="cd-name">نام و نام خانوادگی</label>
+          <input type="text" id="cd-name" name="name" placeholder="مثلاً علی احمدی" autocomplete="name" maxlength="60">
+          <div class="auth-field-error" data-for="cd-name">نام خودت را وارد کن</div>
+        </div>
+        <button type="submit" class="auth-btn" id="verifyBtn">تأیید و ورود</button>
+        <div class="auth-row-links">
+          <button type="button" class="link-btn" id="resendBtn" disabled>ارسال مجدد کد <span id="resendTimer"></span></button>
+          <button type="button" class="link-btn" id="editPhoneBtn">ویرایش شماره</button>
+        </div>
+      </form>
+
+      <div class="auth-footer">
+        قبلاً ثبت‌نام کرده‌ای؟ <a href="login.html">وارد شو</a>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

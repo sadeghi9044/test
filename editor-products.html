@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محصولات | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body data-page="products">
+
+<div id="editorRoot"></div>
+
+<template id="pageBody">
+
+<section class="editor-section" style="padding:20px">
+  <div class="pl-toolbar">
+    <input type="search" class="search" id="plSearch" placeholder="جستجو در نام یا دسته‌بندی…">
+    <a class="btn btn-primary" id="plAdd" data-nav href="editor-product.html">➕ افزودن</a>
+  </div>
+  <div class="pl-count" id="plCount"></div>
+  <div class="pl-list" id="plList"></div>
+</section>
+
+<div class="ed-modal" id="delModal">
+  <div class="box">
+    <h3>حذف شود؟</h3>
+    <p id="delText"></p>
+    <div class="acts">
+      <button type="button" class="btn btn-ghost" id="delNo">انصراف</button>
+      <button type="button" class="btn btn-danger-solid" id="delYes">بله، حذف شود</button>
+    </div>
+  </div>
+</div>
+
+</template>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/editor-core.js"></script>
+<script>
+
+Editor.start('products', {
+  title: 'محصولات', save: false, needsProducts: true,
+  ready: function (E) {
+    var L = E.labels(), MAX = 100;
+    var list = document.getElementById('plList'), search = document.getElementById('plSearch');
+    var add = document.getElementById('plAdd');
+    document.getElementById('edTitle').textContent = L.list;
+    document.getElementById('edSub').textContent = 'افزودن، ویرایش و مرتب‌کردن';
+    document.title = L.list + ' | ' + E.site.name;
+    add.href = E.url('editor-product.html');
+    add.textContent = '➕ ' + L.add;
+    search.placeholder = 'جستجو در ' + L.list + '…';
+    var pendingDelete = null;
+
+    /* تغییر + ذخیره‌ی فوری؛ اگر ذخیره نشد به حالت قبل برمی‌گردد */
+    function mutate(fn, okMsg) {
+      if (E.readOnly) { E.toast('حالت مشاهده (ادمین): امکان تغییر وجود ندارد.', true); return; }
+      var before = E.editor.products.slice();
+      fn(E.editor.products);
+      paint(); E.renderPreview();
+      E.save({ silent: true }).then(function () { if (okMsg) E.toast(okMsg); })
+        .catch(function () { E.editor.products = before; paint(); E.renderPreview(); });
+    }
+
+    function paint() {
+      var all = E.editor.products, term = search.value.trim().toLowerCase();
+      add.style.display = all.length >= MAX ? 'none' : '';
+      var shown = all.map(function (p, i) { return { p: p, i: i }; }).filter(function (x) {
+        return !term || (x.p.name || '').toLowerCase().indexOf(term) >= 0 || (x.p.category || '').toLowerCase().indexOf(term) >= 0;
+      });
+      document.getElementById('plCount').textContent = all.length ? E.fmtMoney(all.length) + ' مورد' + (term ? ' — ' + E.fmtMoney(shown.length) + ' نتیجه' : '') + (all.length >= MAX ? ' (به سقف ' + E.fmtMoney(MAX) + ' مورد رسیده‌ای)' : '') : '';
+
+      if (!all.length) {
+        list.innerHTML = '<div class="pl-empty"><div class="big">' + L.icon + '</div><p>' + E.esc(L.empty) + '</p>' +
+          '<a class="btn btn-primary" data-nav href="' + E.esc(E.url('editor-product.html')) + '">➕ ' + E.esc(L.add) + '</a></div>';
+        return;
+      }
+      if (!shown.length) { list.innerHTML = '<div class="pl-empty"><p>موردی پیدا نشد.</p></div>'; return; }
+
+      list.innerHTML = shown.map(function (x) {
+        var p = x.p, img = E.safeImg(p.image), off = p.oldPrice > p.price ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+        var id = E.esc(p.id), canMove = !term;
+        return '<div class="pl-item' + (p.visible === false ? ' is-hidden' : '') + '">' +
+          '<div class="pl-thumb">' + (img ? '<img src="' + E.esc(img) + '" alt="">' : L.icon) + '</div>' +
+          '<div class="pl-info"><div class="pl-name">' + E.esc(p.name || 'بدون نام') + '</div><div class="pl-meta">' +
+            (L.hasPrice ? '<span class="pl-price">' + E.fmtMoney(p.price) + ' تومان' + (off ? ' <s>' + E.fmtMoney(p.oldPrice) + '</s>' : '') + '</span>' : '') +
+            (off ? '<span class="tag sale">٪' + E.fmtMoney(off) + ' تخفیف</span>' : '') +
+            (p.category ? '<span class="tag">' + E.esc(p.category) + '</span>' : '') +
+            (p.available === false ? '<span class="tag warn">' + E.esc(L.stockOff) + '</span>' : '') +
+            (p.visible === false ? '<span class="tag off">مخفی</span>' : '') +
+          '</div></div>' +
+          '<div class="pl-actions">' +
+            '<button type="button" data-act="up" data-id="' + id + '" title="بالاتر" ' + (!canMove || x.i === 0 ? 'disabled' : '') + '>↑</button>' +
+            '<button type="button" data-act="down" data-id="' + id + '" title="پایین‌تر" ' + (!canMove || x.i === all.length - 1 ? 'disabled' : '') + '>↓</button>' +
+            '<button type="button" data-act="vis" data-id="' + id + '" title="' + (p.visible === false ? 'نمایش در سایت' : 'مخفی کردن از سایت') + '">' + (p.visible === false ? '🙈' : '👁') + '</button>' +
+            '<button type="button" data-act="dup" data-id="' + id + '" title="کپی" ' + (all.length >= MAX ? 'disabled' : '') + '>⧉</button>' +
+            '<a data-nav href="' + E.esc(E.url('editor-product.html', { pid: p.id })) + '" title="ویرایش">✏️</a>' +
+            '<button type="button" class="del" data-act="del" data-id="' + id + '" title="حذف">🗑️</button>' +
+          '</div></div>';
+      }).join('');
+    }
+
+    list.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button[data-act]'); if (!b) return;
+      var id = b.dataset.id, act = b.dataset.act;
+      var idx = E.editor.products.findIndex(function (p) { return p.id === id; });
+      if (idx < 0) return;
+      if (act === 'del') {
+        pendingDelete = id;
+        document.getElementById('delText').textContent = '«' + (E.editor.products[idx].name || 'بدون نام') + '» برای همیشه از سایت حذف می‌شود.';
+        document.getElementById('delModal').classList.add('show');
+      } else if (act === 'up' || act === 'down') {
+        var to = act === 'up' ? idx - 1 : idx + 1;
+        mutate(function (arr) { var t = arr[idx]; arr[idx] = arr[to]; arr[to] = t; });
+      } else if (act === 'vis') {
+        mutate(function (arr) { arr[idx] = Object.assign({}, arr[idx], { visible: arr[idx].visible === false }); },
+          E.editor.products[idx].visible === false ? '✓ در سایت نمایش داده می‌شود' : '✓ از سایت مخفی شد');
+      } else if (act === 'dup') {
+        mutate(function (arr) {
+          var c = Object.assign({}, arr[idx], { id: 'P-' + Date.now(), name: ((arr[idx].name || '') + ' (کپی)').slice(0, 100) });
+          arr.splice(idx + 1, 0, c);
+        }, '✓ کپی شد');
+      }
+    });
+
+    var modal = document.getElementById('delModal');
+    document.getElementById('delNo').addEventListener('click', function () { modal.classList.remove('show'); pendingDelete = null; });
+    modal.addEventListener('click', function (e) { if (e.target === modal) modal.classList.remove('show'); });
+    document.getElementById('delYes').addEventListener('click', function () {
+      modal.classList.remove('show');
+      var id = pendingDelete; pendingDelete = null;
+      if (!id) return;
+      mutate(function (arr) { var i = arr.findIndex(function (p) { return p.id === id; }); if (i >= 0) arr.splice(i, 1); }, '✓ حذف شد');
+    });
+    search.addEventListener('input', paint);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') modal.classList.remove('show'); });
+
+    paint();
+    var done = new URLSearchParams(location.search).get('done');
+    if (done) {
+      E.toast(done === 'add' ? '✓ ' + L.noun + ' جدید ذخیره شد' : '✓ تغییرات ' + L.noun + ' ذخیره شد');
+      history.replaceState(null, '', E.url('editor-products.html'));
+    }
+  }
+});
+
+</script>
+</body>
+</html>

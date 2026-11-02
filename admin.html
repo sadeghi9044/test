@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیریت | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ef4444'/%3E%3Cstop offset='1' stop-color='%23f59e0b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='46' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+</head>
+<body>
+
+<div class="dash-layout">
+
+  <!-- سایدبار اصلاح شده -->
+  <aside class="dash-sidebar admin-sidebar">
+    <div class="dash-brand">⚡ پنل مدیریت</div>
+
+    <div class="dash-user-mini">
+      <div class="avatar">👑</div>
+      <div class="info">
+        <div class="name">مدیر سیستم</div>
+        <div class="id">admin@yoursite.com</div>
+      </div>
+    </div>
+
+    <!-- منوها -->
+    <nav class="dash-nav">
+      <a class="active" data-target="overview"><span class="icon">📊</span> نمای کلی</a>
+      <a data-target="users"><span class="icon">👥</span> کاربران</a>
+      <a data-target="sites"><span class="icon">🌐</span> سایت‌ها</a>
+      <a data-target="subscriptions"><span class="icon">💳</span> اشتراک‌ها</a>
+      <a data-target="payments"><span class="icon">🧾</span> پرداخت‌ها <span id="payBadge" class="admin-tag" style="display:none;"></span></a>
+      <a data-target="affiliates"><span class="icon">🤝</span> همکاران</a>
+      <a data-target="withdrawals"><span class="icon">💸</span> برداشت‌ها <span id="withdrawBadge" class="admin-tag" style="display:none;"></span></a>
+      <a data-target="support"><span class="icon">🎫</span> پشتیبانی <span id="supportBadge" class="admin-tag" style="display:none;"></span></a>
+      <a data-target="settings"><span class="icon">⚙️</span> تنظیمات</a>
+    </nav>
+
+    <!-- دکمه خروج (کاملاً خارج از منوها و با کلاس اختصاصی) -->
+    <a href="#" id="adminLogout" class="admin-logout-btn">
+      🚪 خروج
+    </a>
+  </aside>
+
+  <main class="dash-main">
+
+    <header class="dash-header">
+      <h1 id="pageTitle">نمای کلی</h1>
+      <div class="dash-header-actions">
+        <button class="btn btn-ghost" id="refreshBtn" style="padding:8px 14px;font-size:0.82rem;">🔄 بروزرسانی</button>
+      </div>
+    </header>
+
+    <!-- ============ OVERVIEW ============ -->
+    <section class="dashboard-section active" id="overview">
+      <div class="stats-cards">
+        <div class="stat-card primary">
+          <div class="stat-card-icon">👥</div>
+          <div class="stat-card-label">کل کاربران</div>
+          <div class="stat-card-value" id="kpiUsers">—</div>
+          <div class="kpi-trend up">↑ ۱۲٪ این ماه</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">🌐</div>
+          <div class="stat-card-label">کل سایت‌ها</div>
+          <div class="stat-card-value" id="kpiSites">—</div>
+          <div class="kpi-trend up">↑ ۸٪ این ماه</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">💰</div>
+          <div class="stat-card-label">درآمد ماهانه (MRR)</div>
+          <div class="stat-card-value" id="kpiMRR">—</div>
+          <div class="stat-card-unit">تومان</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">💎</div>
+          <div class="stat-card-label">اشتراک فعال</div>
+          <div class="stat-card-value" id="kpiActive">—</div>
+          <div class="kpi-trend up">↑ ۱۵٪ این ماه</div>
+        </div>
+      </div>
+
+      <div class="stats-cards" style="margin-bottom:24px;">
+        <div class="stat-card">
+          <div class="stat-card-icon">🎫</div>
+          <div class="stat-card-label">تیکت‌های باز</div>
+          <div class="stat-card-value" id="kpiTickets">—</div>
+          <div class="stat-card-unit">در انتظار پاسخ</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">🤝</div>
+          <div class="stat-card-label">همکاران فعال</div>
+          <div class="stat-card-value" id="kpiAffiliates">—</div>
+          <div class="stat-card-unit">نفر</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">💸</div>
+          <div class="stat-card-label">برداشت‌های در انتظار</div>
+          <div class="stat-card-value" id="kpiWithdrawals">—</div>
+          <div class="stat-card-unit">درخواست</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">⚠️</div>
+          <div class="stat-card-label">کاربران معلق</div>
+          <div class="stat-card-value" id="kpiSuspended">—</div>
+          <div class="stat-card-unit">نفر</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;" class="overview-bottom">
+        <div class="chart-card">
+          <h3>📈 درآمد ۶ ماه گذشته (میلیون تومان)</h3>
+          <div class="chart-bars" id="revenueChart" style="height:180px;"></div>
+        </div>
+        <div class="chart-card">
+          <h3>👥 فعالیت‌های اخیر</h3>
+          <div class="activity-feed" id="activityFeed"></div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>🆕 کاربران اخیر</h3>
+          <button class="btn btn-ghost" data-goto="users" style="padding:6px 14px;font-size:0.8rem;">مشاهده همه →</button>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="recentUsersTable">
+            <thead>
+              <tr>
+                <th>نام</th>
+                <th>موبایل</th>
+                <th>پلن</th>
+                <th>سایت‌ها</th>
+                <th>تاریخ عضویت</th>
+                <th>وضعیت</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ USERS ============ -->
+    <section class="dashboard-section" id="users">
+      <div class="admin-toolbar">
+        <input type="text" class="search-bar" id="userSearch" placeholder="🔍 جستجو در نام، موبایل یا ایمیل...">
+        <select class="filter-select" id="userStatusFilter">
+          <option value="all">همه وضعیت‌ها</option>
+          <option value="active">فعال</option>
+          <option value="suspended">معلق</option>
+        </select>
+        <select class="filter-select" id="userPlanFilter">
+          <option value="all">همه پلن‌ها</option>
+          <option value="رایگان">رایگان</option>
+          <option value="حرفه‌ای">حرفه‌ای</option>
+          <option value="کسب و کار">کسب و کار</option>
+        </select>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>👥 همه کاربران (<span id="usersCount">0</span>)</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="allUsersTable">
+            <thead>
+              <tr>
+                <th>نام</th>
+                <th>موبایل</th>
+                <th>ایمیل</th>
+                <th>پلن</th>
+                <th>سایت‌ها</th>
+                <th>عضویت</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SITES ============ -->
+    <section class="dashboard-section" id="sites">
+      <div class="admin-toolbar">
+        <input type="text" class="search-bar" id="siteSearch" placeholder="🔍 جستجو در نام سایت یا زیردامنه...">
+        <select class="filter-select" id="siteTemplateFilter">
+          <option value="all">همه قالب‌ها</option>
+          <option value="shop">فروشگاه</option>
+          <option value="business">کسب و کار</option>
+          <option value="portfolio">پورتفولیو</option>
+          <option value="blog">وبلاگ</option>
+          <option value="restaurant">رستوران</option>
+          <option value="realestate">املاک</option>
+        </select>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>🌐 همه سایت‌ها (<span id="sitesCount">0</span>)</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="allSitesTable">
+            <thead>
+              <tr>
+                <th>نام سایت</th>
+                <th>زیردامنه</th>
+                <th>قالب</th>
+                <th>صاحب</th>
+                <th>بازدید</th>
+                <th>ساخت</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SUBSCRIPTIONS ============ -->
+    <section class="dashboard-section" id="subscriptions">
+      <div class="stats-cards">
+        <div class="stat-card primary">
+          <div class="stat-card-icon">💰</div>
+          <div class="stat-card-label">درآمد کل</div>
+          <div class="stat-card-value" id="subTotalRev">—</div>
+          <div class="stat-card-unit">تومان</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">📅</div>
+          <div class="stat-card-label">این ماه</div>
+          <div class="stat-card-value" id="subMonthRev">—</div>
+          <div class="stat-card-unit">تومان</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">📊</div>
+          <div class="stat-card-label">میانگین هر کاربر</div>
+          <div class="stat-card-value" id="subARPU">—</div>
+          <div class="stat-card-unit">تومان</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">🔄</div>
+          <div class="stat-card-label">نرخ تمدید</div>
+          <div class="stat-card-value" id="subRenewRate">—</div>
+          <div class="stat-card-unit">درصد</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>📊 توزیع پلن‌ها</h3>
+        <div id="planDistribution"></div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>📜 آخرین صورت‌حساب‌ها</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="allInvoicesTable">
+            <thead>
+              <tr>
+                <th>شناسه</th>
+                <th>کاربر</th>
+                <th>تاریخ</th>
+                <th>مبلغ</th>
+                <th>وضعیت</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AFFILIATES ============ -->
+    <section class="dashboard-section" id="affiliates">
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>🤝 همه همکاران (<span id="affiliatesCount">0</span>)</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="affiliatesTable">
+            <thead>
+              <tr>
+                <th>نام</th>
+                <th>ایمیل</th>
+                <th>کد معرف</th>
+                <th>فروش‌ها</th>
+                <th>کل درآمد</th>
+                <th>در انتظار</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WITHDRAWALS ============ -->
+    <section class="dashboard-section" id="withdrawals">
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>💸 درخواست‌های برداشت</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="withdrawalsTable">
+            <thead>
+              <tr>
+                <th>شناسه</th>
+                <th>همکار</th>
+                <th>مبلغ</th>
+                <th>شبا</th>
+                <th>تاریخ درخواست</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SUPPORT ============ -->
+    <section class="dashboard-section" id="payments">
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>🧾 پرداخت‌ها و رسیدهای کارت‌به‌کارت</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="paymentsTable">
+            <thead>
+              <tr>
+                <th>شناسه</th>
+                <th>کاربر</th>
+                <th>پلن</th>
+                <th>مبلغ</th>
+                <th>روش</th>
+                <th>پیگیری</th>
+                <th>تاریخ</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard-section" id="support">
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>🎫 تیکت‌های پشتیبانی</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="ticketsTable">
+            <thead>
+              <tr>
+                <th>شناسه</th>
+                <th>کاربر</th>
+                <th>موضوع</th>
+                <th>تاریخ</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section class="dashboard-section" id="settings">
+      <div class="account-section">
+        <h3>⚙️ تنظیمات کلی سیستم</h3>
+        <form id="settingsForm">
+          <div class="editor-row">
+            <div class="auth-field">
+              <label>نام سایت</label>
+              <input type="text" id="st-name" value="سایت‌ساز">
+            </div>
+            <div class="auth-field">
+              <label>ایمیل پشتیبانی</label>
+              <input type="email" id="st-email" value="hello@yoursite.com" style="direction:ltr;text-align:left;">
+            </div>
+          </div>
+          <div class="editor-row">
+            <div class="auth-field">
+              <label>درصد پورسانت همکاران</label>
+              <input type="number" id="st-commission" value="50" min="0" max="100">
+            </div>
+            <div class="auth-field">
+              <label>مدت پورسانت تمدید (ماه)</label>
+              <input type="number" id="st-renewal" value="12" min="1" max="36">
+            </div>
+          </div>
+          <div class="editor-row">
+            <div class="auth-field">
+              <label>آیدی تلگرام پشتیبانی (بدون @)</label>
+              <input type="text" id="st-telegram" placeholder="my_support" style="direction:ltr;text-align:left;">
+            </div>
+            <div class="auth-field">
+              <label>آیدی بله پشتیبانی (بدون @)</label>
+              <input type="text" id="st-bale" placeholder="my_support" style="direction:ltr;text-align:left;">
+            </div>
+          </div>
+          <div class="auth-field">
+            <label>لینک آموزش (اختیاری، https)</label>
+            <input type="url" id="st-tutorial" placeholder="https://..." style="direction:ltr;text-align:left;">
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:12px;padding:12px 28px;">💾 ذخیره تنظیمات</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="dash-toast" id="dashToast"></div>
+
+<script src="js/api.js"></script>
+<script type="text/plain" id="adminMain">
+function esc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+}
+// ============ DATA (از سرور) ============
+let CACHE = __BOOT;
+function apiFail(err) {
+  if (err && err.status === 401) { window.location.href = 'admin-login.html'; return; }
+  showToast((err && err.message) || 'خطا', true);
+}
+async function reloadData() {
+  CACHE = await API.get('/api/admin/snapshot');
+}
+
+// ============ UTILS ============
+function fmtNum(n) { return Math.floor(n).toLocaleString('fa-IR'); }
+function fmtMoney(n) { return Math.floor(n).toLocaleString('fa-IR'); }
+
+function showToast(msg, isError) {
+  const t = document.getElementById('dashToast');
+  t.textContent = msg;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ============ DATA LOADERS ============
+function loadUsers() { return CACHE.users; }
+function loadUserData(userId) { return CACHE.userData[userId] || null; }
+function loadAffiliates() { return CACHE.affiliates; }
+function loadWithdrawals() { return CACHE.withdrawals; }
+
+// ============ RENDER OVERVIEW ============
+function renderOverview() {
+  const users = loadUsers();
+  const affiliates = loadAffiliates();
+  const withdrawals = loadWithdrawals();
+
+  let allSites = [];
+  let allTickets = [];
+  let mrr = 0;
+  let activeSubs = 0;
+
+  users.forEach(u => {
+    const data = loadUserData(u.id);
+    if (!data) return;
+    allSites.push(...(data.sites || []).map(s => ({ ...s, ownerName: u.name, ownerId: u.id })));
+    (data.tickets || []).forEach(t => allTickets.push({ ...t, userName: u.name, userId: u.id }));
+    if (data.plan && data.plan.price > 0) { mrr += data.plan.price; activeSubs++; }
+  });
+
+  const suspended = users.filter(u => u.status === 'suspended').length;
+  const openTickets = allTickets.filter(t => t.status === 'open').length;
+  const pendingWithdrawals = withdrawals.filter(w => w.status === 'pending').length;
+  const activeAffiliates = affiliates.filter(a => a.status === 'active').length;
+
+  document.getElementById('kpiUsers').textContent = fmtNum(users.length);
+  document.getElementById('kpiSites').textContent = fmtNum(allSites.length);
+  document.getElementById('kpiMRR').textContent = fmtMoney(mrr);
+  document.getElementById('kpiActive').textContent = fmtNum(activeSubs);
+  document.getElementById('kpiTickets').textContent = fmtNum(openTickets);
+  document.getElementById('kpiAffiliates').textContent = fmtNum(activeAffiliates);
+  document.getElementById('kpiWithdrawals').textContent = fmtNum(pendingWithdrawals);
+  document.getElementById('kpiSuspended').textContent = fmtNum(suspended);
+
+  if (pendingWithdrawals > 0) {
+    const b = document.getElementById('withdrawBadge');
+    b.textContent = pendingWithdrawals;
+    b.style.display = 'inline-block';
+  } else {
+    document.getElementById('withdrawBadge').style.display = 'none';
+  }
+  if (openTickets > 0) {
+    const b = document.getElementById('supportBadge');
+    b.textContent = openTickets;
+    b.style.display = 'inline-block';
+  } else {
+    document.getElementById('supportBadge').style.display = 'none';
+  }
+
+  // درآمد ۶ ماه اخیر (از صورت‌حساب‌های پرداخت‌شده‌ی واقعی)
+  const now = new Date();
+  const buckets = [];
+  for (let k = 5; k >= 0; k--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - k, 1);
+    buckets.push({ key: d.getFullYear() + '-' + d.getMonth(), label: d.toLocaleDateString('fa-IR', { month: 'long' }), sum: 0 });
+  }
+  users.forEach(u => {
+    const data = loadUserData(u.id);
+    ((data && data.invoices) || []).forEach(inv => {
+      if (inv.status !== 'paid' || !inv.createdAtISO) return;
+      const d = new Date(inv.createdAtISO);
+      const b = buckets.find(x => x.key === d.getFullYear() + '-' + d.getMonth());
+      if (b) b.sum += inv.amount;
+    });
+  });
+  const max = Math.max(...buckets.map(b => b.sum), 1);
+  const chartEl = document.getElementById('revenueChart');
+  if (buckets.every(b => b.sum === 0)) {
+    chartEl.innerHTML = '<div style="width:100%;text-align:center;color:var(--muted);padding:40px 0;">هنوز درآمدی ثبت نشده است</div>';
+  } else {
+    chartEl.innerHTML = buckets.map(b => `
+      <div class="chart-bar">
+        <div class="chart-bar-value">${(b.sum / 1000000).toFixed(1)}M</div>
+        <div class="chart-bar-inner" style="height:${(b.sum / max) * 100}%"></div>
+        <div class="chart-bar-label">${esc(b.label)}</div>
+      </div>
+    `).join('');
+  }
+
+  // آخرین فعالیت‌ها (واقعی)
+  const events = [];
+  users.forEach(u => events.push({ t: u.createdAtISO, icon: '👤', text: 'کاربر جدید ثبت‌نام کرد', sub: u.name }));
+  allSites.forEach(s => events.push({ t: s.createdAtISO, icon: '🌐', text: 'سایت جدید ساخته شد', sub: s.name + ' — ' + s.ownerName }));
+  allTickets.forEach(t => events.push({ t: t.createdAtISO, icon: '🎫', text: 'تیکت جدید ثبت شد', sub: t.subject }));
+  withdrawals.filter(w => w.status === 'pending').forEach(w => events.push({ t: null, icon: '💸', text: 'درخواست برداشت همکار', sub: fmtMoney(w.amount) + ' تومان' }));
+  events.sort((x, y) => new Date(y.t || 0) - new Date(x.t || 0));
+  function ago(iso) {
+    if (!iso) return '';
+    const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000));
+    if (m < 1) return 'همین الان';
+    if (m < 60) return fmtNum(m) + ' دقیقه پیش';
+    if (m < 1440) return fmtNum(Math.round(m / 60)) + ' ساعت پیش';
+    return fmtNum(Math.round(m / 1440)) + ' روز پیش';
+  }
+  document.getElementById('activityFeed').innerHTML = events.length === 0
+    ? '<div style="color:var(--muted);padding:20px 0;text-align:center;">فعالیتی ثبت نشده است</div>'
+    : events.slice(0, 6).map(a => `
+    <div class="activity-item">
+      <div class="activity-icon">${a.icon}</div>
+      <div class="activity-text">
+        <strong>${esc(a.text)}</strong>
+        <p>${esc(a.sub)}</p>
+      </div>
+      <div class="activity-time">${esc(ago(a.t))}</div>
+    </div>
+  `).join('');
+
+  const tb = document.querySelector('#recentUsersTable tbody');
+  tb.innerHTML = users.slice(-4).reverse().map(u => {
+    const data = loadUserData(u.id);
+    const sitesCount = data?.sites?.length || 0;
+    return `
+      <tr>
+        <td>${esc(u.name)}</td>
+        <td class="mono muted">${esc(u.phone)}</td>
+        <td>${esc(data?.plan?.name) || '—'}</td>
+        <td>${sitesCount}</td>
+        <td class="muted">${esc(u.createdAt)}</td>
+        <td><span class="status-badge ${u.status === 'active' ? 'active' : 'inactive'}">${u.status === 'active' ? 'فعال' : 'معلق'}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ============ RENDER USERS ============
+function renderUsers() {
+  const users = loadUsers();
+  const search = (document.getElementById('userSearch').value || '').toLowerCase();
+  const statusFilter = document.getElementById('userStatusFilter').value;
+  const planFilter = document.getElementById('userPlanFilter').value;
+
+  const filtered = users.filter(u => {
+    if (search && !u.name.toLowerCase().includes(search) && !(u.email || '').toLowerCase().includes(search) && !String(u.phone || '').includes(search)) return false;
+    if (statusFilter !== 'all' && u.status !== statusFilter) return false;
+    const data = loadUserData(u.id);
+    if (planFilter !== 'all' && data?.plan?.name !== planFilter) return false;
+    return true;
+  });
+
+  document.getElementById('usersCount').textContent = fmtNum(filtered.length);
+  const tb = document.querySelector('#allUsersTable tbody');
+
+  if (filtered.length === 0) {
+    tb.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">کاربری پیدا نشد</td></tr>`;
+    return;
+  }
+
+  tb.innerHTML = filtered.map(u => {
+    const data = loadUserData(u.id);
+    const sitesCount = data?.sites?.length || 0;
+    return `
+      <tr>
+        <td>${esc(u.name)}</td>
+        <td class="mono muted" style="font-size:0.82rem;">${esc(u.phone) || '—'}</td>
+        <td class="muted" style="font-size:0.78rem;">${esc(u.email) || '—'}</td>
+        <td>${esc(data?.plan?.name) || '—'}</td>
+        <td>${sitesCount}</td>
+        <td class="muted">${esc(u.createdAt)}</td>
+        <td><span class="status-badge ${u.status === 'active' ? 'active' : 'inactive'}">${u.status === 'active' ? 'فعال' : 'معلق'}</span></td>
+        <td>
+          <button class="admin-table-action" onclick="viewUser('${u.id}')">👁️</button>
+          ${u.status === 'active' 
+            ? `<button class="admin-table-action warn" onclick="toggleUserStatus('${u.id}')">⏸️</button>`
+            : `<button class="admin-table-action success" onclick="toggleUserStatus('${u.id}')">▶️</button>`}
+          <button class="admin-table-action danger" onclick="deleteUser('${u.id}')">🗑️</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.viewUser = function (id) {
+  const users = loadUsers();
+  const u = users.find(x => x.id === id);
+  if (!u) return;
+  const data = loadUserData(id);
+  alert(
+    `👤 ${u.name}\n` +
+    `📱 ${u.phone}\n` +
+    `📧 ${u.email || '—'}\n` +
+    `\n` +
+    `💎 پلن: ${esc(data?.plan?.name) || '—'}\n` +
+    `🌐 سایت‌ها: ${data?.sites?.length || 0}\n` +
+    `📅 عضویت: ${u.createdAt}\n` +
+    `وضعیت: ${u.status === 'active' ? 'فعال' : 'معلق'}`
+  );
+};
+
+window.toggleUserStatus = function (id) {
+  const u = loadUsers().find(x => x.id === id);
+  if (!u) return;
+  const next = u.status === 'active' ? 'suspended' : 'active';
+  API.patch('/api/admin/users/' + encodeURIComponent(id), { status: next }).then(reloadData).then(() => {
+    showToast(`✓ کاربر ${next === 'active' ? 'فعال' : 'معلق'} شد`);
+    renderUsers();
+    renderOverview();
+  }).catch(apiFail);
+};
+
+window.deleteUser = function (id) {
+  const u = loadUsers().find(x => x.id === id);
+  if (!u) return;
+  if (!confirm(`کاربر «${u.name}» و تمام داده‌هایش حذف شود؟`)) return;
+  API.del('/api/admin/users/' + encodeURIComponent(id)).then(reloadData).then(() => {
+    showToast('✓ کاربر حذف شد');
+    renderUsers();
+    renderOverview();
+  }).catch(apiFail);
+};
+
+// ============ RENDER SITES ============
+function renderSites() {
+  const users = loadUsers();
+  const search = (document.getElementById('siteSearch').value || '').toLowerCase();
+  const tplFilter = document.getElementById('siteTemplateFilter').value;
+
+  let sites = [];
+  users.forEach(u => {
+    const data = loadUserData(u.id);
+    if (!data) return;
+    (data.sites || []).forEach(s => sites.push({ ...s, ownerName: u.name, ownerId: u.id }));
+  });
+
+  const filtered = sites.filter(s => {
+    if (search && !s.name.toLowerCase().includes(search) && !s.subdomain.toLowerCase().includes(search)) return false;
+    if (tplFilter !== 'all' && s.template !== tplFilter) return false;
+    return true;
+  });
+
+  document.getElementById('sitesCount').textContent = fmtNum(filtered.length);
+  const tb = document.querySelector('#allSitesTable tbody');
+
+  if (filtered.length === 0) {
+    tb.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">سایتی پیدا نشد</td></tr>`;
+    return;
+  }
+
+  const tplNames = { business: 'کسب و کار', shop: 'فروشگاه', portfolio: 'پورتفولیو', blog: 'وبلاگ', restaurant: 'رستوران', realestate: 'املاک' };
+
+  tb.innerHTML = filtered.map(s => `
+    <tr>
+      <td>${esc(s.name)}</td>
+      <td class="mono muted" style="font-size:0.78rem;direction:ltr;text-align:right;">${s.subdomain}.yoursite.com</td>
+      <td>${esc(tplNames[s.template] || s.template)}</td>
+      <td class="muted">${esc(s.ownerName)}</td>
+      <td class="muted">${fmtNum(s.visits)}</td>
+      <td class="muted">${esc(s.createdAt)}</td>
+      <td><span class="status-badge ${s.status === 'active' ? 'active' : 'inactive'}">${s.status === 'active' ? 'فعال' : 'معلق'}</span></td>
+      <td>
+        <button class="admin-table-action" onclick="adminViewSite('${s.ownerId}','${s.id}')">✏️</button>
+        <button class="admin-table-action danger" onclick="adminDeleteSite('${s.ownerId}','${s.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+window.adminViewSite = function (ownerId, siteId) {
+  window.open('site-editor.html?admin=1&id=' + encodeURIComponent(siteId), '_blank');
+};
+
+window.adminDeleteSite = function (ownerId, siteId) {
+  if (!confirm('این سایت حذف شود؟')) return;
+  API.del('/api/admin/sites/' + encodeURIComponent(siteId)).then(reloadData).then(() => {
+    showToast('✓ سایت حذف شد');
+    renderSites();
+    renderOverview();
+  }).catch(apiFail);
+};
+
+// ============ RENDER SUBSCRIPTIONS ============
+function renderSubscriptions() {
+  const users = loadUsers();
+  let totalRev = 0, monthRev = 0, activeSubs = 0;
+  const planCounts = { 'رایگان': 0, 'حرفه‌ای': 0, 'کسب و کار': 0 };
+  const allInvoices = [];
+
+  users.forEach(u => {
+    const data = loadUserData(u.id);
+    if (!data) return;
+    if (data.plan) {
+      planCounts[data.plan.name] = (planCounts[data.plan.name] || 0) + 1;
+      if (data.plan.price > 0) {
+        totalRev += data.plan.price;
+        monthRev += data.plan.price;
+        activeSubs++;
+      }
+    }
+    (data.invoices || []).forEach(inv => {
+      allInvoices.push({ ...inv, userName: u.name });
+    });
+  });
+
+  const arpu = activeSubs > 0 ? totalRev / activeSubs : 0;
+
+  document.getElementById('subTotalRev').textContent = fmtMoney(totalRev);
+  document.getElementById('subMonthRev').textContent = fmtMoney(monthRev);
+  document.getElementById('subARPU').textContent = fmtMoney(arpu);
+  document.getElementById('subRenewRate').textContent = '—';
+
+  const totalUsers = users.length || 1;
+  document.getElementById('planDistribution').innerHTML = Object.entries(planCounts).map(([name, count]) => `
+    <div class="plan-bar">
+      <div class="plan-bar-label">${esc(name)}</div>
+      <div class="plan-bar-track">
+        <div class="plan-bar-fill" style="width:${(count/totalUsers)*100}%"></div>
+      </div>
+      <div class="plan-bar-value">${count} نفر</div>
+    </div>
+  `).join('');
+
+  const tb = document.querySelector('#allInvoicesTable tbody');
+  if (allInvoices.length === 0) {
+    tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--muted);">صورت‌حسابی وجود ندارد</td></tr>`;
+    return;
+  }
+  tb.innerHTML = allInvoices.slice(0, 20).map(inv => `
+    <tr>
+      <td class="mono">${inv.id}</td>
+      <td>${esc(inv.userName)}</td>
+      <td class="muted">${esc(inv.date)}</td>
+      <td class="amount">${fmtMoney(inv.amount)}</td>
+      <td><span class="status-badge ${inv.status === 'paid' ? 'paid' : 'pending'}">${inv.status === 'paid' ? 'پرداخت‌شده' : 'در انتظار'}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ============ RENDER AFFILIATES ============
+function renderAffiliates() {
+  const affiliates = loadAffiliates();
+  document.getElementById('affiliatesCount').textContent = fmtNum(affiliates.length);
+  const tb = document.querySelector('#affiliatesTable tbody');
+
+  if (affiliates.length === 0) {
+    tb.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">همکاری وجود ندارد</td></tr>`;
+    return;
+  }
+
+  const statusLabels = { active: 'فعال', pending: 'در انتظار', suspended: 'معلق' };
+  tb.innerHTML = affiliates.map(a => `
+    <tr>
+      <td>${esc(a.name)}</td>
+      <td class="mono muted" style="font-size:0.78rem;">${esc(a.email)}</td>
+      <td class="mono">${esc(a.referralCode)}</td>
+      <td>${fmtNum(a.sales)}</td>
+      <td class="amount" style="color:#6ee7b7;">${fmtMoney(a.totalEarned)}</td>
+      <td class="amount" style="color:#fbbf24;">${fmtMoney(a.pending)}</td>
+      <td><span class="status-badge ${a.status === 'active' ? 'active' : a.status === 'pending' ? 'pending' : 'inactive'}">${statusLabels[a.status] || a.status}</span></td>
+      <td>
+        ${a.status === 'pending' ? `<button class="admin-table-action success" onclick="approveAffiliate('${a.id}')">✓ تایید</button>` : ''}
+        <button class="admin-table-action danger" onclick="deleteAffiliate('${a.id}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+window.approveAffiliate = function (id) {
+  API.patch('/api/admin/affiliates/' + encodeURIComponent(id), { status: 'active' }).then(reloadData).then(() => {
+    showToast('✓ همکار تایید شد');
+    renderAffiliates();
+    renderOverview();
+  }).catch(apiFail);
+};
+
+window.deleteAffiliate = function (id) {
+  if (!confirm('این همکار حذف شود؟')) return;
+  API.del('/api/admin/affiliates/' + encodeURIComponent(id)).then(reloadData).then(() => {
+    showToast('✓ همکار حذف شد');
+    renderAffiliates();
+    renderOverview();
+  }).catch(apiFail);
+};
+
+// ============ RENDER WITHDRAWALS ============
+function renderWithdrawals() {
+  const withdrawals = loadWithdrawals();
+  const tb = document.querySelector('#withdrawalsTable tbody');
+
+  if (withdrawals.length === 0) {
+    tb.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">درخواستی وجود ندارد</td></tr>`;
+    return;
+  }
+
+  const statusLabels = { pending: 'در انتظار', approved: 'تایید شده', paid: 'پرداخت‌شده', rejected: 'رد شده' };
+  tb.innerHTML = withdrawals.map(w => `
+    <tr>
+      <td class="mono">${w.id}</td>
+      <td>${esc(w.affiliateName)}</td>
+      <td class="amount">${fmtMoney(w.amount)} تومان</td>
+      <td class="mono muted" style="font-size:0.75rem;">${w.iban.slice(0, 6)}...${w.iban.slice(-4)}</td>
+      <td class="muted">${esc(w.requestedAt)}</td>
+      <td><span class="status-badge ${w.status === 'paid' ? 'paid' : w.status === 'pending' ? 'pending' : w.status === 'rejected' ? 'rejected' : 'approved'}">${statusLabels[w.status]}</span></td>
+      <td>
+        ${w.status === 'pending' ? `
+          <button class="admin-table-action success" onclick="approveWithdrawal('${w.id}')">✓ تایید</button>
+          <button class="admin-table-action danger" onclick="rejectWithdrawal('${w.id}')">✗ رد</button>
+        ` : '—'}
+      </td>
+    </tr>
+  `).join('');
+}
+
+window.approveWithdrawal = function (id) {
+  API.patch('/api/admin/withdrawals/' + encodeURIComponent(id), { status: 'paid' }).then(reloadData).then(() => {
+    showToast('✓ برداشت تایید و پرداخت شد');
+    renderWithdrawals();
+    renderOverview();
+  }).catch(apiFail);
+};
+
+window.rejectWithdrawal = function (id) {
+  if (!confirm('این درخواست رد شود؟')) return;
+  API.patch('/api/admin/withdrawals/' + encodeURIComponent(id), { status: 'rejected' }).then(reloadData).then(() => {
+    showToast('✓ درخواست رد شد');
+    renderWithdrawals();
+  }).catch(apiFail);
+};
+
+// ============ RENDER TICKETS ============
+// ============ PAYMENTS ============
+let PAYMENTS = [];
+const PAY_STATUS = { pending: ['pending', 'در انتظار پرداخت'], review: ['pending', 'نیازمند بررسی'], paid: ['paid', 'پرداخت‌شده'],
+  rejected: ['rejected', 'رد شد'], failed: ['rejected', 'ناموفق'], canceled: ['inactive', 'لغو شد'] };
+function updatePayBadge() {
+  const n = PAYMENTS.filter(p => p.status === 'review').length;
+  const b = document.getElementById('payBadge');
+  b.textContent = n; b.style.display = n ? '' : 'none';
+}
+async function renderPayments() {
+  try { PAYMENTS = (await API.get('/api/admin/payments')).payments; } catch (e) { return apiFail(e); }
+  updatePayBadge();
+  const tb = document.querySelector('#paymentsTable tbody');
+  if (!PAYMENTS.length) {
+    tb.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted);">پرداختی وجود ندارد</td></tr>';
+    return;
+  }
+  tb.innerHTML = PAYMENTS.map(p => {
+    const st = PAY_STATUS[p.status] || ['inactive', p.status];
+    const ref = p.method === 'zarinpal' ? esc(p.refId || '—') : esc(p.receiptRef || '—');
+    return `<tr>
+      <td class="mono">${esc(p.id)}</td>
+      <td>${esc(p.userName)}</td>
+      <td>${esc(p.planName)}</td>
+      <td class="amount">${fmtMoney(p.amount)} تومان</td>
+      <td>${p.method === 'zarinpal' ? 'زرین‌پال' : 'کارت‌به‌کارت'}</td>
+      <td class="mono" dir="ltr">${ref}</td>
+      <td class="muted">${esc(p.date)}</td>
+      <td><span class="status-badge ${st[0]}">${st[1]}</span>${p.adminNote ? '<div style="font-size:.72rem;color:var(--muted);">' + esc(p.adminNote) + '</div>' : ''}</td>
+      <td>
+        ${p.hasReceipt ? `<button class="admin-table-action" onclick="viewReceipt('${esc(p.id)}')">🖼️ رسید</button>` : ''}
+        ${p.status === 'review' ? `<button class="admin-table-action success" onclick="reviewPayment('${esc(p.id)}','approve')">✓ تأیید</button>
+        <button class="admin-table-action danger" onclick="reviewPayment('${esc(p.id)}','reject')">✗ رد</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+function viewReceipt(id) {
+  const p = PAYMENTS.find(x => x.id === id); if (!p) return;
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto;';
+  ov.innerHTML = `<div style="background:#161628;border-radius:16px;padding:20px;max-width:560px;width:100%;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><b>رسید ${esc(p.userName)} — ${fmtMoney(p.amount)} تومان</b><button id="rcClose" class="admin-table-action">بستن</button></div>
+    ${p.receiptRef ? '<div style="margin-bottom:6px;">شماره پیگیری: <span dir="ltr">' + esc(p.receiptRef) + '</span></div>' : ''}
+    ${p.userNote ? '<div style="margin-bottom:6px;color:var(--muted);">توضیح مشتری: ' + esc(p.userNote) + '</div>' : ''}
+    <img src="/api/admin/payments/${encodeURIComponent(p.id)}/receipt" alt="رسید" style="max-width:100%;border-radius:10px;">
+  </div>`;
+  ov.addEventListener('click', e => { if (e.target === ov || e.target.id === 'rcClose') ov.remove(); });
+  document.body.appendChild(ov);
+}
+async function reviewPayment(id, action) {
+  let note = '';
+  if (action === 'reject') {
+    note = (prompt('دلیل رد رسید (برای مشتری نمایش داده می‌شود):') || '').trim();
+    if (!note) return;
+  } else if (!confirm('رسید تأیید و پلن مشتری فعال شود؟')) return;
+  try {
+    await API.patch('/api/admin/payments/' + encodeURIComponent(id), { action: action, note: note });
+    showToast(action === 'approve' ? '✓ تأیید شد و پلن فعال شد' : '✓ رسید رد شد');
+    await reloadData().catch(() => {});
+    renderPayments();
+  } catch (e) { apiFail(e); }
+}
+
+function renderTickets() {
+  renderMessages();
+  const users = loadUsers();
+  let tickets = [];
+  users.forEach(u => {
+    const data = loadUserData(u.id);
+    if (!data) return;
+    (data.tickets || []).forEach(t => tickets.push({ ...t, userName: u.name, userId: u.id }));
+  });
+
+  const tb = document.querySelector('#ticketsTable tbody');
+  if (tickets.length === 0) {
+    tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">تیکتی وجود ندارد</td></tr>`;
+    return;
+  }
+
+  tb.innerHTML = tickets.map(t => `
+    <tr>
+      <td class="mono">${t.id}</td>
+      <td>${esc(t.userName)}</td>
+      <td>${esc(t.subject)}</td>
+      <td class="muted">${esc(t.date)}</td>
+      <td><span class="status-badge ${t.status === 'open' ? 'pending' : 'approved'}">${t.status === 'open' ? 'باز' : 'پاسخ داده'}</span></td>
+      <td>
+        <button class="admin-table-action" onclick="viewTicket('${t.userId}','${t.id}')">👁️ مشاهده</button>
+        ${t.status === 'open' ? `<button class="admin-table-action success" onclick="closeTicket('${t.userId}','${t.id}')">✓ بستن</button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+window.viewTicket = function (userId, ticketId) {
+  const data = loadUserData(userId);
+  if (!data || !data.tickets) return;
+  const t = data.tickets.find(x => x.id === ticketId);
+  if (!t) return;
+  alert(`موضوع: ${t.subject}\n\nاز: ${t.userName || '—'}\nتاریخ: ${t.date}\n\n${t.message}`);
+};
+
+window.closeTicket = function (userId, ticketId) {
+  API.patch('/api/admin/tickets/' + encodeURIComponent(ticketId), { status: 'answered' }).then(reloadData).then(() => {
+    showToast('✓ تیکت بسته شد');
+    renderTickets();
+    renderOverview();
+  }).catch(apiFail);
+};
+
+// ============ CONTACT MESSAGES ============
+async function renderMessages() {
+  let box = document.getElementById('contactMessagesBox');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'contactMessagesBox';
+    box.style.marginTop = '32px';
+    document.getElementById('support').appendChild(box);
+  }
+  try {
+    const r = await API.get('/api/admin/messages');
+    box.innerHTML = '<h3 style="margin-bottom:12px;">پیام‌های فرم تماس</h3>' + (r.messages.length === 0
+      ? '<div style="color:var(--muted);padding:16px 0;">پیامی وجود ندارد</div>'
+      : '<div style="overflow-x:auto"><table class="data-table"><thead><tr><th>نام</th><th>ایمیل</th><th>موضوع</th><th>تاریخ</th><th></th></tr></thead><tbody>' +
+        r.messages.map(m => `<tr><td>${esc(m.name)}</td><td class="mono muted">${esc(m.email)}</td><td>${esc(m.subject)}</td><td class="muted">${esc(m.date)}</td>` +
+          `<td><button class="admin-table-action" data-msg-view="${esc(m.id)}">👁️</button> <button class="admin-table-action danger" data-msg-del="${esc(m.id)}">🗑️</button></td></tr>`).join('') +
+        '</tbody></table></div>');
+    box.querySelectorAll('[data-msg-view]').forEach(b => b.addEventListener('click', () => {
+      const m = r.messages.find(x => x.id === b.dataset.msgView);
+      if (m) alert(`از: ${m.name} <${m.email}>\nموضوع: ${m.subject}\n\n${m.message}`);
+    }));
+    box.querySelectorAll('[data-msg-del]').forEach(b => b.addEventListener('click', () => {
+      if (!confirm('این پیام حذف شود؟')) return;
+      API.del('/api/admin/messages/' + encodeURIComponent(b.dataset.msgDel)).then(renderMessages).catch(apiFail);
+    }));
+  } catch (e) { apiFail(e); }
+}
+
+// ============ NAVIGATION ============
+const titles = {
+  overview: 'نمای کلی',
+  users: 'مدیریت کاربران',
+  sites: 'مدیریت سایت‌ها',
+  subscriptions: 'اشتراک‌ها و درآمد',
+  affiliates: 'همکاران',
+  payments: 'پرداخت‌ها',
+  withdrawals: 'درخواست‌های برداشت',
+  support: 'پشتیبانی',
+  settings: 'تنظیمات'
+};
+
+function showSection(target) {
+  document.querySelectorAll('.dash-nav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.target === target);
+  });
+  document.querySelectorAll('.dashboard-section').forEach(sec => {
+    sec.classList.toggle('active', sec.id === target);
+  });
+  document.getElementById('pageTitle').textContent = titles[target] || '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (target === 'users') renderUsers();
+  else if (target === 'sites') renderSites();
+  else if (target === 'subscriptions') renderSubscriptions();
+  else if (target === 'payments') renderPayments();
+  else if (target === 'affiliates') renderAffiliates();
+  else if (target === 'withdrawals') renderWithdrawals();
+  else if (target === 'support') renderTickets();
+}
+
+document.querySelectorAll('.dash-nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    showSection(a.dataset.target);
+  });
+});
+
+document.querySelectorAll('[data-goto]').forEach(btn => {
+  btn.addEventListener('click', () => showSection(btn.dataset.goto));
+});
+
+// ============ LOGOUT ============
+API.get('/api/admin/payments').then(r => { PAYMENTS = r.payments; updatePayBadge(); }).catch(() => {});
+
+document.getElementById('adminLogout').addEventListener('click', e => {
+  e.preventDefault();
+  if (confirm('از پنل مدیریت خارج می‌شوی؟')) {
+    API.post('/api/admin/logout').finally(() => { window.location.href = 'admin-login.html'; });
+  }
+});
+
+// ============ FILTERS / SEARCH ============
+['userSearch', 'userStatusFilter', 'userPlanFilter'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', renderUsers);
+});
+['siteSearch', 'siteTemplateFilter'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', renderSites);
+});
+
+// ============ REFRESH / RESEED ============
+document.getElementById('refreshBtn').addEventListener('click', () => {
+  reloadData().then(() => {
+    renderOverview();
+    const active = document.querySelector('.dashboard-section.active');
+    if (active && active.id !== 'overview') showSection(active.id);
+    showToast('✓ بروزرسانی شد');
+  }).catch(apiFail);
+});
+
+// ============ SETTINGS FORM ============
+(function loadSettingsForm() {
+  const st = (CACHE.settings && CACHE.settings.admin) || {};
+  if (st.siteName) document.getElementById('st-name').value = st.siteName;
+  if (st.email) document.getElementById('st-email').value = st.email;
+  if (st.commission !== undefined) document.getElementById('st-commission').value = st.commission;
+  if (st.renewalMonths !== undefined) document.getElementById('st-renewal').value = st.renewalMonths;
+  const sp = (CACHE.settings && CACHE.settings.support) || {};
+  document.getElementById('st-telegram').value = sp.telegram || '';
+  document.getElementById('st-bale').value = sp.bale || '';
+  document.getElementById('st-tutorial').value = sp.tutorialUrl || '';
+})();
+document.getElementById('settingsForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const settings = {
+    siteName: document.getElementById('st-name').value,
+    email: document.getElementById('st-email').value,
+    commission: Number(document.getElementById('st-commission').value),
+    renewalMonths: Number(document.getElementById('st-renewal').value)
+  };
+  API.put('/api/admin/settings', { admin: settings, support: { telegram: document.getElementById('st-telegram').value, bale: document.getElementById('st-bale').value, tutorialUrl: document.getElementById('st-tutorial').value } }).then(() => showToast('✓ تنظیمات ذخیره شد')).catch(apiFail);
+});
+
+// ============ INIT ============
+renderOverview();
+renderUsers();
+</script>
+<script>
+Boot.run('adminMain', async function () {
+  try {
+    const [snap, settings] = await Promise.all([API.get('/api/admin/snapshot'), API.get('/api/admin/settings')]);
+    snap.settings = settings;
+    return snap;
+  } catch (e) {
+    if (e.status === 401) throw Boot.redirect('admin-login.html');
+    throw e;
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شروع ساخت سایت | سایت‌ساز</title>
+<meta name="description" content="انتخاب روش ساخت سایت">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<meta name="robots" content="noindex">
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">◆ سایت‌ساز</a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">خانه</a>
+      <a href="features.html">ویژگی‌ها</a>
+      <a href="pricing.html">تعرفه‌ها</a>
+      <a href="blog.html">بلاگ</a>
+      <a href="about.html">درباره</a>
+      <a href="contact.html">تماس</a>
+      <a href="pricing.html" class="mobile-cta btn btn-primary">شروع رایگان</a>
+    </div>
+    <a href="pricing.html" class="btn btn-primary nav-cta">شروع رایگان</a>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="باز کردن منو">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<section class="error-page">
+  <div class="hero-content" style="max-width:640px">
+    <h1>خوش آمدی! سایتت را چطور بسازیم؟</h1>
+    <p>هر دو روش را می‌توانی بعداً هم عوض کنی.</p>
+    <div class="hero-btns" style="flex-direction:column;gap:12px">
+      <a href="wizard.html" class="btn btn-primary" id="selfBuild">خودم می‌سازم</a>
+      <button type="button" class="btn btn-ghost" id="teamBuild">طراحی توسط تیم سایت‌ساز</button>
+      <a href="dashboard.html#new-site" class="btn btn-ghost" id="quick">ساخت سریع (فرم ساده)</a>
+      <a href="dashboard.html" class="btn btn-ghost" id="later">بعداً، برو به داشبورد</a>
+    </div>
+  </div>
+</section>
+
+<div id="teamModal" role="dialog" aria-modal="true" aria-labelledby="teamTitle" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.65);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:26px;max-width:440px;width:100%;text-align:right">
+    <h3 id="teamTitle" style="margin-bottom:10px">طراحی توسط تیم سایت‌ساز</h3>
+    <p style="color:var(--muted);font-size:.9rem;line-height:2;margin-bottom:16px">
+      کارهای سایتت را به تیم ما بسپار. اطلاعات کسب‌وکارت را برای ما می‌فرستی، ما سایت را می‌سازیم و تحویل می‌دهیم؛ بعد از آن هم می‌توانی خودت آن را ویرایش کنی.
+      برای شروع از یکی از راه‌های زیر پیام بده:
+    </p>
+    <div id="teamLinks" style="display:flex;flex-direction:column;gap:10px"></div>
+    <a href="contact.html?subject=design" class="btn btn-ghost" style="margin-top:10px;display:block;text-align:center">ارسال درخواست از فرم تماس</a>
+    <a id="tutorialLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="margin-top:10px;display:none;text-align:center">دیدن آموزش ساخت سایت</a>
+    <button type="button" id="closeModal" class="btn btn-ghost" style="margin-top:10px;width:100%">بستن</button>
+  </div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script>
+// فقط کاربر واردشده؛ «بعداً» تا پایان نشست، ریدایرکت خودکار را خاموش می‌کند
+API.get('/api/me').catch(function () { location.replace('login.html?next=dashboard.html'); });
+function skip() { try { sessionStorage.setItem('ss_skip_onboarding', '1'); } catch (_) {} }
+document.getElementById('later').addEventListener('click', skip);
+document.getElementById('selfBuild').addEventListener('click', skip);
+document.getElementById('quick').addEventListener('click', skip);
+
+var modal = document.getElementById('teamModal');
+function closeModal() { modal.style.display = 'none'; }
+document.getElementById('teamBuild').addEventListener('click', function () {
+  modal.style.display = 'flex';
+  var box = document.getElementById('teamLinks');
+  if (box.dataset.loaded) return;
+  box.dataset.loaded = '1';
+  API.get('/api/support').then(function (s) {
+    function add(label, href) {
+      var a = document.createElement('a');
+      a.className = 'btn btn-primary'; a.style.textAlign = 'center';
+      a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.href = href; a.textContent = label;
+      box.appendChild(a);
+    }
+    if (s.telegram) add('پیام در تلگرام', 'https://t.me/' + encodeURIComponent(s.telegram));
+    if (s.bale) add('پیام در بله', 'https://ble.ir/' + encodeURIComponent(s.bale));
+    if (!s.telegram && !s.bale) box.innerHTML = '<p style="color:var(--muted);font-size:.85rem">فعلاً از فرم تماس زیر درخواستت را بفرست.</p>';
+    if (/^https:\/\//.test(s.tutorialUrl || '')) {
+      var t = document.getElementById('tutorialLink');
+      t.href = s.tutorialUrl; t.style.display = 'block';
+    }
+  }).catch(function () {});
+});
+document.getElementById('closeModal').addEventListener('click', closeModal);
+modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

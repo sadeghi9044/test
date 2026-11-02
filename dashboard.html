@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل کاربری | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+</head>
+<body>
+
+<div class="dash-layout">
+
+  <aside class="dash-sidebar">
+    <div class="dash-brand">🎨 پنل کاربری</div>
+
+    <div class="dash-user-mini">
+      <div class="avatar" id="userAvatar">—</div>
+      <div class="info">
+        <div class="name" id="userName">—</div>
+        <div class="id" id="userEmail">—</div>
+      </div>
+    </div>
+
+    <nav class="dash-nav">
+      <a class="active" data-target="overview"><span class="icon">📊</span> نمای کلی</a>
+      <a data-target="sites"><span class="icon">🌐</span> سایت‌های من</a>
+      <a data-target="new-site"><span class="icon">➕</span> ساخت سایت جدید</a>
+      <a data-target="billing"><span class="icon">💳</span> اشتراک و صورتحساب</a>
+      <a data-target="account"><span class="icon">👤</span> تنظیمات حساب</a>
+      <a data-target="support"><span class="icon">🛟</span> پشتیبانی</a>
+    </nav>
+
+    <a href="#" id="logoutSide" class="btn btn-ghost" style="margin-top:16px;justify-content:center;text-align:center;font-size:0.82rem;padding:10px;color:#fca5a5;border-color:rgba(239,68,68,0.3);">
+      🚪 خروج از حساب
+    </a>
+  </aside>
+
+  <main class="dash-main">
+
+    <header class="dash-header">
+      <h1 id="pageTitle">نمای کلی</h1>
+      <div class="dash-header-actions">
+        <a href="index.html" class="btn btn-ghost" style="padding:8px 14px;font-size:0.82rem;">← مشاهده سایت</a>
+      </div>
+    </header>
+
+    <!-- OVERVIEW -->
+    <section class="dashboard-section active" id="overview">
+      <div class="stats-cards">
+        <div class="stat-card primary">
+          <div class="stat-card-icon">🌐</div>
+          <div class="stat-card-label">سایت‌های فعال</div>
+          <div class="stat-card-value" id="ovSitesCount">—</div>
+          <div class="stat-card-unit">سایت</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">👁️</div>
+          <div class="stat-card-label">کل بازدید (۳۰ روز)</div>
+          <div class="stat-card-value" id="ovVisits">—</div>
+          <div class="stat-card-unit">بازدید</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">📅</div>
+          <div class="stat-card-label">روز تا تمدید</div>
+          <div class="stat-card-value" id="ovRenewal">—</div>
+          <div class="stat-card-unit">روز</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">💎</div>
+          <div class="stat-card-label">پلن فعلی</div>
+          <div class="stat-card-value" id="ovPlan" style="font-size:1.3rem;">—</div>
+          <div class="stat-card-unit" id="ovPlanUnit">—</div>
+        </div>
+      </div>
+
+      <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">سایت‌های اخیر</h2>
+      <div class="site-cards-grid" id="ovSitesPreview"></div>
+    </section>
+
+    <!-- SITES -->
+    <section class="dashboard-section" id="sites">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <h2 style="font-size:1.1rem;font-weight:700;">همه سایت‌ها</h2>
+        <button class="btn btn-primary" data-goto="new-site" style="padding:10px 20px;font-size:0.85rem;">➕ ساخت سایت جدید</button>
+      </div>
+      <div class="site-cards-grid" id="allSitesGrid"></div>
+    </section>
+
+    <!-- NEW SITE -->
+    <section class="dashboard-section" id="new-site">
+      <div class="new-site-form">
+        <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:8px;">ساخت سایت جدید</h2>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:24px;">در کمتر از ۱ دقیقه سایتت آماده می‌شه.</p>
+
+        <form id="newSiteForm">
+          <div class="form-section-title">۱. اطلاعات سایت</div>
+
+          <div class="auth-field">
+            <label for="ns-name">نام سایت</label>
+            <input type="text" id="ns-name" placeholder="مثلاً: فروشگاه گل‌ها" required>
+          </div>
+
+          <div class="auth-field">
+            <label for="ns-subdomain">زیردامنه (آدرس سایت)</label>
+            <div style="display:flex;align-items:center;gap:0;">
+              <input type="text" id="ns-subdomain" placeholder="my-shop" required style="border-radius:10px 0 0 10px;direction:ltr;text-align:left;flex:1;" pattern="[a-z0-9\-]+">
+              <span id="nsSuffix" style="padding:12px 16px;background:var(--bg2);border:1px solid rgba(255,255,255,0.1);border-right:none;border-radius:0 10px 10px 0;color:var(--muted);font-family:monospace;font-size:0.85rem;direction:ltr;">.yoursite.com</span>
+            </div>
+            <small style="display:block;font-size:0.75rem;color:var(--muted);margin-top:6px;">فقط حروف انگلیسی، اعداد و خط تیره</small>
+          </div>
+
+          <div class="form-section-title">۲. انتخاب قالب</div>
+          <div class="template-picker" id="templatePicker">
+            <button type="button" class="tpl-pick active" data-template="business">
+              <div class="preview business">💼</div>
+              <div class="lbl">کسب و کار</div>
+            </button>
+            <button type="button" class="tpl-pick" data-template="shop">
+              <div class="preview shop">🛍️</div>
+              <div class="lbl">فروشگاه</div>
+            </button>
+            <button type="button" class="tpl-pick" data-template="portfolio">
+              <div class="preview portfolio">🎨</div>
+              <div class="lbl">پورتفولیو</div>
+            </button>
+            <button type="button" class="tpl-pick" data-template="blog">
+              <div class="preview blog">📝</div>
+              <div class="lbl">وبلاگ</div>
+            </button>
+            <button type="button" class="tpl-pick" data-template="restaurant">
+              <div class="preview restaurant">🍽️</div>
+              <div class="lbl">رستوران</div>
+            </button>
+            <button type="button" class="tpl-pick" data-template="realestate">
+              <div class="preview realestate">🏠</div>
+              <div class="lbl">املاک</div>
+            </button>
+          </div>
+
+          <div class="form-section-title">۳. توضیحات (اختیاری)</div>
+          <div class="auth-field">
+            <label for="ns-desc">درباره سایتت</label>
+            <textarea id="ns-desc" rows="3" placeholder="مثلاً: فروشگاه گل و گیاه آپارتمانی، ارسال به سراسر کشور" style="width:100%;padding:12px 16px;background:var(--card);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary full" style="margin-top:20px;">🚀 ساخت سایت</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- BILLING -->
+    <section class="dashboard-section" id="billing">
+      <div class="plan-card">
+        <div class="plan-info">
+          <h3>پلن <span id="billingPlanName">—</span></h3>
+          <div class="price" id="billingPrice">— <small>تومان / ماهانه</small></div>
+          <div class="renew" id="billingRenew">تمدید بعدی: —</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="pricing.html" class="btn btn-primary" style="padding:12px 24px;">ارتقاء پلن</a>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>📜 تاریخچه صورت‌حساب‌ها</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="invoicesTable">
+            <thead>
+              <tr>
+                <th>شناسه</th>
+                <th>تاریخ</th>
+                <th>شرح</th>
+                <th>مبلغ</th>
+                <th>وضعیت</th>
+                <th>فاکتور</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCOUNT -->
+    <section class="dashboard-section" id="account">
+      <div class="account-section">
+        <h3>👤 اطلاعات شخصی</h3>
+        <form id="profileForm">
+          <div class="auth-field">
+            <label for="ac-first">نام</label>
+            <input type="text" id="ac-first" maxlength="30" autocomplete="given-name" required>
+          </div>
+          <div class="auth-field">
+            <label for="ac-last">نام خانوادگی</label>
+            <input type="text" id="ac-last" maxlength="40" autocomplete="family-name" required>
+          </div>
+          <div class="auth-field">
+            <label for="ac-email">ایمیل</label>
+            <input type="email" id="ac-email" placeholder="اختیاری" style="direction:ltr;text-align:left;">
+          </div>
+          <div class="auth-field">
+            <label for="ac-phone">شماره موبایل</label>
+            <input type="tel" id="ac-phone" readonly style="direction:ltr;text-align:left;opacity:.7;cursor:not-allowed;" title="شماره موبایل برای ورود استفاده می‌شود و قابل تغییر نیست">
+          </div>
+          <div class="auth-field">
+            <label>تاریخ تولد (اختیاری)</label>
+            <div class="date-row">
+              <select id="ac-bd-day" aria-label="روز"></select>
+              <select id="ac-bd-month" aria-label="ماه"></select>
+              <select id="ac-bd-year" aria-label="سال"></select>
+            </div>
+          </div>
+          <div class="auth-field">
+            <label for="ac-province">استان (اختیاری)</label>
+            <select id="ac-province"><option value="">انتخاب کنید</option></select>
+          </div>
+          <div class="auth-field">
+            <label for="ac-city">شهر (اختیاری)</label>
+            <select id="ac-city" disabled><option value="">ابتدا استان را انتخاب کنید</option></select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:8px;padding:12px 28px;">ذخیره تغییرات</button>
+        </form>
+      </div>
+
+      <div class="account-section" style="border-color:rgba(239,68,68,0.3);">
+        <h3 style="color:#fca5a5;">⚠️ حذف حساب</h3>
+        <p style="color:var(--muted);font-size:0.88rem;margin-bottom:16px;line-height:1.7;">
+          با حذف حساب، تمام سایت‌ها، داده‌ها و اطلاعات شما برای همیشه پاک می‌شود. این عمل قابل بازگشت نیست.
+        </p>
+        <button class="btn btn-danger" id="deleteAccountBtn" style="padding:10px 24px;">حذف حساب کاربری</button>
+      </div>
+    </section>
+
+    <!-- SUPPORT -->
+    <section class="dashboard-section" id="support">
+      <h2 style="font-size:1.1rem;font-weight:700;margin-bottom:20px;">چطور می‌تونیم کمکت کنیم؟</h2>
+
+      <div class="support-quick">
+        <a href="blog.html" class="support-quick-card">
+          <div class="icon">📚</div>
+          <h4>مقالات و راهنماها</h4>
+          <p>پاسخ بیشتر سوالات اینجاست</p>
+        </a>
+        <a href="contact.html" class="support-quick-card">
+          <div class="icon">💬</div>
+          <h4>تماس مستقیم</h4>
+          <p>تیم ما پاسخگوی شماست</p>
+        </a>
+        <a href="https://wa.me/989120000000" target="_blank" class="support-quick-card">
+          <div class="icon">📱</div>
+          <h4>واتساپ</h4>
+          <p>پاسخ سریع در ساعات کاری</p>
+        </a>
+        <a href="mailto:support@yoursite.com" id="supportMail" class="support-quick-card">
+          <div class="icon">📧</div>
+          <h4>ایمیل</h4>
+          <p>support@yoursite.com</p>
+        </a>
+      </div>
+
+      <div class="account-section" style="max-width:100%;">
+        <h3>🎫 تیکت جدید</h3>
+        <form id="ticketForm">
+          <div class="auth-field">
+            <label for="tk-subject">موضوع</label>
+            <input type="text" id="tk-subject" placeholder="مثلاً: کمک در تنظیم دامنه" required>
+          </div>
+          <div class="auth-field">
+            <label for="tk-message">توضیحات</label>
+            <textarea id="tk-message" rows="4" required placeholder="مشکل یا سوالت رو کامل توضیح بده..." style="width:100%;padding:12px 16px;background:var(--card);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:8px;padding:12px 28px;">ارسال تیکت</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="dash-toast" id="dashToast"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script type="text/plain" id="dashMain">
+function esc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+}
+/* ============ DATA (از سرور) ============ */
+let CURRENT_USER = __BOOT.user;
+let DATA = __BOOT.data;
+function saveData() { /* داده‌ها از طریق API روی سرور ذخیره می‌شوند */ }
+
+/* ============ UTILS ============ */
+function fmtNum(n) { return Math.floor(n).toLocaleString('fa-IR'); }
+function fmtMoney(n) { return Math.floor(n).toLocaleString('fa-IR'); }
+function fmtDate(iso) { return new Date(iso).toLocaleDateString('fa-IR'); }
+
+function showToast(msg, isError) {
+  const t = document.getElementById('dashToast');
+  t.textContent = msg;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function daysUntil(iso) {
+  const diff = new Date(iso) - new Date();
+  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+}
+
+/* ============ RENDER: USER ============ */
+document.getElementById('userName').textContent = CURRENT_USER.name;
+document.getElementById('userEmail').textContent = CURRENT_USER.phone;
+document.getElementById('userAvatar').textContent = CURRENT_USER.name.charAt(0);
+
+/* ============ RENDER: OVERVIEW ============ */
+function renderOverview() {
+  const activeSites = DATA.sites.filter(s => s.status === 'active').length;
+  const totalVisits = DATA.sites.reduce((s, x) => s + x.visits, 0);
+  const daysLeft = DATA.plan.renewalDate ? daysUntil(DATA.plan.renewalDate) : null;
+
+  document.getElementById('ovSitesCount').textContent = fmtNum(activeSites);
+  document.getElementById('ovVisits').textContent = fmtNum(totalVisits);
+  document.getElementById('ovRenewal').textContent = daysLeft === null ? '—' : fmtNum(daysLeft);
+  document.getElementById('ovPlan').textContent = DATA.plan.name;
+  document.getElementById('ovPlanUnit').textContent = DATA.plan.price > 0 ? fmtMoney(DATA.plan.price) + ' تومان/ماه' : 'بدون هزینه';
+
+  // Recent sites (up to 4)
+  const preview = document.getElementById('ovSitesPreview');
+  const recent = DATA.sites.slice(0, 4);
+  if (recent.length === 0) {
+    preview.innerHTML = `
+      <div class="empty-sites" style="grid-column:1/-1;">
+        <div class="big-icon">🚀</div>
+        <h3>هنوز سایتی نساختی</h3>
+        <p>اولین سایتت رو همین حالا بساز. کمتر از ۱ دقیقه!</p>
+        <button class="btn btn-primary" data-goto="new-site">➕ ساخت اولین سایت</button>
+      </div>
+    `;
+    bindGoto();
+    return;
+  }
+  preview.innerHTML = recent.map(siteCardHTML).join('');
+  bindSiteActions();
+}
+
+/* ============ RENDER: ALL SITES ============ */
+function siteCardHTML(site) {
+  const templateIcons = {
+    business: '💼', shop: '🛍️', portfolio: '🎨',
+    blog: '📝', restaurant: '🍽️', realestate: '🏠'
+  };
+  const statusLabel = { active: 'فعال', draft: 'پیش‌نویس', suspended: 'تعلیق' }[site.status] || site.status;
+  return `
+    <div class="site-card" data-site-id="${esc(site.id)}">
+      <div class="site-card-preview ${site.template}">${templateIcons[site.template] || '🌐'}</div>
+      <div class="site-card-body">
+        <div class="site-card-header">
+          <div>
+            <div class="site-card-name">${esc(site.name)}</div>
+            <div class="site-card-domain">${esc(site.subdomain)}.${esc(window.BASE_DOMAIN || 'yoursite.com')}</div>
+          </div>
+          <span class="site-card-status ${site.status}">${statusLabel}</span>
+        </div>
+        <div class="site-card-stats">
+          <div class="site-card-stat">
+            <div class="num">${fmtNum(site.visits)}</div>
+            <div class="lbl">بازدید</div>
+          </div>
+          <div class="site-card-stat">
+            <div class="num">${site.createdAt}</div>
+            <div class="lbl">تاریخ ساخت</div>
+          </div>
+        </div>
+        <div class="site-card-actions">
+          <a href="#" data-action="edit" data-id="${esc(site.id)}">✏️ ویرایش</a>
+          <a href="#" data-action="view" data-id="${esc(site.id)}">👁️ مشاهده</a>
+          <button data-action="delete" data-id="${esc(site.id)}" style="color:#fca5a5;">🗑️ حذف</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderAllSites() {
+  const grid = document.getElementById('allSitesGrid');
+  if (DATA.sites.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-sites" style="grid-column:1/-1;">
+        <div class="big-icon">🌐</div>
+        <h3>هنوز سایتی نداری</h3>
+        <p>اولین سایتت رو بساز و دنیای آنلاین رو شروع کن.</p>
+        <button class="btn btn-primary" data-goto="new-site">➕ ساخت سایت جدید</button>
+      </div>
+    `;
+    bindGoto();
+    return;
+  }
+  grid.innerHTML = DATA.sites.map(siteCardHTML).join('');
+  bindSiteActions();
+}
+
+/* ============ RENDER: BILLING ============ */
+function invoiceAction(inv) {
+  if (inv.method === 'card' && ['pending', 'review', 'rejected'].includes(inv.status) && inv.paymentId) {
+    const label = inv.status === 'review' ? 'مشاهده وضعیت' : inv.status === 'rejected' ? 'ارسال رسید جدید' : 'ارسال رسید';
+    return '<a href="checkout.html?pay=' + encodeURIComponent(inv.paymentId) + '" style="color:var(--primary);">' + label + '</a>'
+      + (inv.status === 'rejected' && inv.adminNote ? '<div style="font-size:.75rem;color:#fca5a5;">' + esc(inv.adminNote) + '</div>' : '');
+  }
+  return '—';
+}
+function renderBilling() {
+  document.getElementById('billingPlanName').textContent = DATA.plan.name;
+  document.getElementById('billingPrice').innerHTML = DATA.plan.price > 0 ? fmtMoney(DATA.plan.price) + ' <small>تومان / ماهانه</small>' : 'رایگان';
+  document.getElementById('billingRenew').textContent = DATA.plan.renewalDate ? 'تمدید بعدی: ' + fmtDate(DATA.plan.renewalDate) : 'پلن رایگان — بدون تمدید';
+
+  const tb = document.querySelector('#invoicesTable tbody');
+  if (DATA.invoices.length === 0) {
+    tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">صورت‌حسابی وجود ندارد</td></tr>`;
+    return;
+  }
+  const statusLabels = { paid: 'پرداخت‌شده', pending: 'در انتظار پرداخت', review: 'در انتظار تأیید رسید', rejected: 'رسید رد شد', failed: 'ناموفق' };
+  tb.innerHTML = DATA.invoices.map(inv => `
+    <tr>
+      <td class="mono">${esc(inv.id)}</td>
+      <td class="muted">${esc(inv.date)}</td>
+      <td>${esc(inv.desc)}</td>
+      <td class="amount">${fmtMoney(inv.amount)} تومان</td>
+      <td><span class="status-badge ${inv.status === 'paid' ? 'paid' : inv.status === 'pending' ? 'pending' : 'rejected'}">${statusLabels[inv.status] || inv.status}</span></td>
+      <td class="muted">${invoiceAction(inv)}</td>
+    </tr>
+  `).join('');
+}
+
+/* ============ BIND: SITE ACTIONS ============ */
+function bindSiteActions() {
+  document.querySelectorAll('[data-action]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const action = el.dataset.action;
+      const id = el.dataset.id;
+      const site = DATA.sites.find(s => s.id === id);
+      if (!site) return;
+
+      if (action === 'delete') {
+        if (confirm(`سایت «${site.name}» حذف شود؟ این عمل قابل بازگشت نیست.`)) {
+          API.del('/api/sites/' + encodeURIComponent(id)).then(() => {
+            DATA.sites = DATA.sites.filter(s => s.id !== id);
+            renderOverview();
+            renderAllSites();
+            showToast('✓ سایت حذف شد');
+          }).catch(err => showToast(err.message, true));
+        }
+      } else if (action === 'edit') {
+  window.location.href = 'site-editor.html?id=' + encodeURIComponent(id);
+} else if (action === 'view') {
+  window.open('/s/' + encodeURIComponent(site.subdomain), '_blank');
+}
+    });
+  });
+}
+
+/* ============ BIND: GOTO BUTTONS ============ */
+function bindGoto() {
+  document.querySelectorAll('[data-goto]').forEach(btn => {
+    btn.addEventListener('click', () => showSection(btn.dataset.goto));
+  });
+}
+
+/* ============ RENDER: PROFILE FORM ============ */
+const JALALI_MONTHS = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+let GEO = null;
+function faNum(n) { return Number(n).toLocaleString('fa-IR', { useGrouping: false }); }
+function fillSelect(sel, placeholder, items, selected) {
+  sel.innerHTML = '';
+  const first = document.createElement('option'); first.value = ''; first.textContent = placeholder; sel.appendChild(first);
+  items.forEach(it => {
+    const o = document.createElement('option'); o.value = it.value; o.textContent = it.label;
+    if (String(it.value) === String(selected)) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+function currentJalaliYear() {
+  try {
+    const y = parseInt(new Intl.DateTimeFormat('en-US-u-ca-persian', { year: 'numeric' }).format(new Date()), 10);
+    if (y > 1300 && y < 1700) return y;
+  } catch (e) {}
+  return 1405;
+}
+function renderBirthSelects(value) {
+  const m = /^(\d{4})\/(\d{2})\/(\d{2})$/.exec(value || '');
+  const y = m ? +m[1] : '', mo = m ? +m[2] : '', d = m ? +m[3] : '';
+  const days = [], months = [], years = [];
+  for (let i = 1; i <= 31; i++) days.push({ value: i, label: faNum(i) });
+  JALALI_MONTHS.forEach((n, i) => months.push({ value: i + 1, label: n }));
+  for (let i = currentJalaliYear(); i >= 1300; i--) years.push({ value: i, label: faNum(i) });
+  fillSelect(document.getElementById('ac-bd-day'), 'روز', days, d);
+  fillSelect(document.getElementById('ac-bd-month'), 'ماه', months, mo);
+  fillSelect(document.getElementById('ac-bd-year'), 'سال', years, y);
+}
+function readBirthDate() {
+  const d = document.getElementById('ac-bd-day').value, mo = document.getElementById('ac-bd-month').value, y = document.getElementById('ac-bd-year').value;
+  if (!d && !mo && !y) return { value: '' };
+  if (!d || !mo || !y) return { error: 'تاریخ تولد را کامل انتخاب کن (یا هر سه را خالی بگذار).' };
+  return { value: y + '/' + String(mo).padStart(2, '0') + '/' + String(d).padStart(2, '0') };
+}
+function renderCities(province, selectedCity) {
+  const sel = document.getElementById('ac-city');
+  const p = GEO && GEO.find(x => x.name === province);
+  if (!p) { fillSelect(sel, 'ابتدا استان را انتخاب کنید', [], ''); sel.disabled = true; return; }
+  fillSelect(sel, 'انتخاب کنید', p.cities.map(c => ({ value: c, label: c })), selectedCity);
+  sel.disabled = false;
+}
+async function renderGeo() {
+  const provSel = document.getElementById('ac-province');
+  try {
+    if (!GEO) GEO = (await API.get('/api/geo/provinces')).provinces;
+  } catch (e) { return; } // بدون لیست استان فرم همچنان قابل استفاده است
+  fillSelect(provSel, 'انتخاب کنید', GEO.map(p => ({ value: p.name, label: p.name })), CURRENT_USER.province);
+  renderCities(CURRENT_USER.province, CURRENT_USER.city);
+}
+document.getElementById('ac-province').addEventListener('change', function () { renderCities(this.value, ''); });
+
+/* ============ RENDER: PROFILE FORM ============ */
+function renderProfile() {
+  // کاربران قدیمی ممکن است فقط name داشته باشند
+  const parts = (CURRENT_USER.name || '').trim().split(/\s+/);
+  document.getElementById('ac-first').value = CURRENT_USER.firstName || parts[0] || '';
+  document.getElementById('ac-last').value = CURRENT_USER.lastName || parts.slice(1).join(' ');
+  document.getElementById('ac-email').value = CURRENT_USER.email || '';
+  document.getElementById('ac-phone').value = CURRENT_USER.phone || '';
+  renderBirthSelects(CURRENT_USER.birthDate);
+  renderGeo();
+}
+
+/* ============ NAVIGATION ============ */
+const titles = {
+  overview: 'نمای کلی',
+  sites: 'سایت‌های من',
+  'new-site': 'ساخت سایت جدید',
+  billing: 'اشتراک و صورتحساب',
+  account: 'تنظیمات حساب',
+  support: 'پشتیبانی'
+};
+
+function showSection(target) {
+  document.querySelectorAll('.dash-nav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.target === target);
+  });
+  document.querySelectorAll('.dashboard-section').forEach(sec => {
+    sec.classList.toggle('active', sec.id === target);
+  });
+  document.getElementById('pageTitle').textContent = titles[target] || '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.dash-nav a').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    showSection(a.dataset.target);
+  });
+});
+
+/* ============ LOGOUT ============ */
+document.getElementById('logoutSide').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (confirm('از حساب کاربری خارج می‌شوی؟')) {
+    API.post('/api/auth/logout').finally(() => { window.location.href = 'index.html'; });
+  }
+});
+
+/* ============ NEW SITE: TEMPLATE PICKER ============ */
+let selectedTemplate = 'business';
+document.querySelectorAll('.tpl-pick').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tpl-pick').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedTemplate = btn.dataset.template;
+  });
+});
+
+/* ============ NEW SITE: SUBMIT ============ */
+document.getElementById('newSiteForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const form = this;
+
+  const name = document.getElementById('ns-name').value.trim();
+  const subdomain = document.getElementById('ns-subdomain').value.trim().toLowerCase();
+  const desc = document.getElementById('ns-desc').value.trim();
+
+  if (!name || name.length < 2) { showToast('نام سایت را وارد کن', true); return; }
+  if (!/^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(subdomain)) {
+    showToast('زیردامنه باید ۳ تا ۳۰ کاراکتر، فقط حروف کوچک انگلیسی، عدد یا خط تیره باشد', true);
+    return;
+  }
+  if (DATA.sites.some(s => s.subdomain === subdomain)) {
+    showToast('این زیردامنه قبلاً استفاده شده. یکی دیگر انتخاب کن.', true);
+    return;
+  }
+
+  API.post('/api/sites', { name: name, subdomain: subdomain, template: selectedTemplate, description: desc }).then(r => {
+    DATA.sites.unshift(r.site);
+    form.reset();
+    selectedTemplate = 'business';
+    document.querySelectorAll('.tpl-pick').forEach(b => b.classList.remove('active'));
+    document.querySelector('.tpl-pick[data-template="business"]').classList.add('active');
+    showToast('✓ سایت شما ساخته شد!');
+    renderOverview();
+    renderAllSites();
+    showSection('sites');
+  }).catch(err => showToast(err.message, true));
+});
+
+/* ============ PROFILE FORM ============ */
+document.getElementById('profileForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const firstName = document.getElementById('ac-first').value.trim();
+  const lastName = document.getElementById('ac-last').value.trim();
+  const email = document.getElementById('ac-email').value.trim().toLowerCase();
+  const bd = readBirthDate();
+
+  if (firstName.length < 2) { showToast('نام را وارد کن', true); return; }
+  if (lastName.length < 2) { showToast('نام خانوادگی را وارد کن', true); return; }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('ایمیل معتبر وارد کن', true); return; }
+  if (bd.error) { showToast(bd.error, true); return; }
+
+  API.put('/api/me', {
+    firstName: firstName, lastName: lastName, email: email, birthDate: bd.value,
+    province: document.getElementById('ac-province').value, city: document.getElementById('ac-city').value
+  }).then(r => {
+    CURRENT_USER = r.user;
+    document.getElementById('userName').textContent = CURRENT_USER.name;
+    document.getElementById('userAvatar').textContent = CURRENT_USER.name.charAt(0);
+    showToast('✓ اطلاعات ذخیره شد');
+  }).catch(err => showToast(err.message, true));
+});
+
+/* ============ DELETE ACCOUNT ============ */
+document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+  if (!confirm('آیا مطمئنی؟ تمام سایت‌ها و داده‌هایت برای همیشه پاک می‌شود.')) return;
+  if (!confirm('این آخرین هشدار است. حذف حساب غیرقابل بازگشت است. ادامه می‌دهی؟')) return;
+  API.del('/api/me').then(() => {
+    alert('حساب شما حذف شد. در حال انتقال به صفحه اصلی...');
+    window.location.href = 'index.html';
+  }).catch(err => showToast(err.message, true));
+});
+
+/* ============ SUPPORT TICKET ============ */
+document.getElementById('ticketForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const form = this;
+  const subject = document.getElementById('tk-subject').value.trim();
+  const message = document.getElementById('tk-message').value.trim();
+
+  if (!subject || !message) { showToast('موضوع و توضیحات را کامل کن', true); return; }
+
+  API.post('/api/tickets', { subject: subject, message: message }).then(r => {
+    DATA.tickets = DATA.tickets || [];
+    DATA.tickets.unshift(r.ticket);
+    form.reset();
+    showToast('✓ تیکت شما ثبت شد. تیم پشتیبانی تا ۲۴ ساعت آینده پاسخ می‌دهد.');
+  }).catch(err => showToast(err.message, true));
+});
+
+/* ============ INITIAL RENDER ============ */
+const nsSuffix = document.getElementById('nsSuffix');
+if (nsSuffix) nsSuffix.textContent = '.' + (window.BASE_DOMAIN || 'yoursite.com');
+renderOverview();
+renderAllSites();
+renderBilling();
+renderProfile();
+bindGoto();
+
+if (location.hash === '#new-site') { showSection('new-site'); history.replaceState(null, '', 'dashboard.html'); }
+
+/* بازگشت از درگاه پرداخت */
+(function () {
+  const pay = new URLSearchParams(location.search).get('pay');
+  if (!pay) return;
+  showSection('billing');
+  if (pay === 'ok') showToast('✓ پرداخت با موفقیت انجام شد و پلن شما فعال شد.');
+  else showToast('پرداخت انجام نشد. اگر مبلغ از حساب شما کم شده، تا ۷۲ ساعت به حساب برمی‌گردد یا با پشتیبانی تماس بگیرید.', true);
+  history.replaceState(null, '', 'dashboard.html');
+})();
+</script>
+<script>
+Boot.run('dashMain', async function () {
+  try {
+    const res = await API.get('/api/dashboard');
+    // کاربر بدون سایت (مثلاً بعد از ثبت‌نام) به صفحه‌ی شروع ساخت سایت می‌رود؛ با «بعداً» می‌تواند رد شود
+    let skipped = false;
+    try { skipped = sessionStorage.getItem('ss_skip_onboarding') === '1'; } catch (_) {}
+    if (!skipped && res.data && res.data.sites && res.data.sites.length === 0) throw Boot.redirect('onboarding.html');
+    return res;
+  }
+  catch (e) {
+    if (e && e.status === undefined) throw e; // ریدایرکت داخلی
+    if (e.status === 401 || e.status === 403) throw Boot.redirect('login.html?next=dashboard.html');
+    throw e;
+  }
+});
+</script>
+</body>
+</html>

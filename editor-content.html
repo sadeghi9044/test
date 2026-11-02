@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صفحه اصلی | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body data-page="content">
+
+<div id="editorRoot"></div>
+
+<template id="pageBody">
+
+<section class="editor-section" id="hero">
+  <h2>📝 بخش اول سایت</h2>
+  <p class="editor-desc">اولین چیزی که بازدیدکننده می‌بیند</p>
+  <div class="editor-field"><label>عنوان اصلی</label><input type="text" data-key="heroTitle" maxlength="120" data-count></div>
+  <div class="editor-field"><label>توضیح زیر عنوان</label><textarea data-key="heroDesc" rows="3" maxlength="400" data-count></textarea></div>
+  <div class="editor-field"><label>متن دکمه اصلی</label><input type="text" data-key="heroBtnText" maxlength="40"></div>
+  <div class="editor-field">
+    <label>تصویر پس‌زمینه (اختیاری)</label>
+    <div class="editor-upload-row">
+      <input type="text" data-key="heroBgImage" data-img placeholder="آدرس تصویر یا از فایل انتخاب کن" style="direction:ltr;text-align:left;">
+      <input type="file" accept="image/*" data-upload="heroBgImage">
+    </div>
+    <img class="editor-img-preview hidden" data-preview="heroBgImage" alt="">
+  </div>
+</section>
+
+<section class="editor-section" id="features" style="display:none">
+  <h2>⭐ ویژگی‌ها</h2>
+  <p class="editor-desc">سه ویژگی یا خدمت اصلی خود را معرفی کنید</p>
+  <div class="feat-block">
+    <h3>ویژگی 1</h3>
+    <div class="editor-row">
+      <div class="editor-field"><label>آیکون</label><input type="text" data-key="feat1Icon" maxlength="8" style="text-align:center;font-size:1.3rem;"></div>
+      <div class="editor-field"><label>عنوان</label><input type="text" data-key="feat1Title" maxlength="60"></div>
+    </div>
+    <div class="editor-field"><label>توضیح</label><input type="text" data-key="feat1Desc" maxlength="160"></div>
+  </div>
+  <div class="feat-block">
+    <h3>ویژگی 2</h3>
+    <div class="editor-row">
+      <div class="editor-field"><label>آیکون</label><input type="text" data-key="feat2Icon" maxlength="8" style="text-align:center;font-size:1.3rem;"></div>
+      <div class="editor-field"><label>عنوان</label><input type="text" data-key="feat2Title" maxlength="60"></div>
+    </div>
+    <div class="editor-field"><label>توضیح</label><input type="text" data-key="feat2Desc" maxlength="160"></div>
+  </div>
+  <div class="feat-block">
+    <h3>ویژگی 3</h3>
+    <div class="editor-row">
+      <div class="editor-field"><label>آیکون</label><input type="text" data-key="feat3Icon" maxlength="8" style="text-align:center;font-size:1.3rem;"></div>
+      <div class="editor-field"><label>عنوان</label><input type="text" data-key="feat3Title" maxlength="60"></div>
+    </div>
+    <div class="editor-field"><label>توضیح</label><input type="text" data-key="feat3Desc" maxlength="160"></div>
+  </div>
+</section>
+
+</template>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/editor-core.js"></script>
+<script>
+
+Editor.start('content', {
+  title: 'صفحه اصلی', sub: 'عنوان، توضیح و ویژگی‌ها',
+  ready: function (E) {
+    document.getElementById('features').style.display = E.editor.template === 'business' ? 'block' : 'none';
+  }
+});
+
+</script>
+</body>
+</html>

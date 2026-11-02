@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل همکاری | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+</head>
+<body>
+
+<div class="dash-layout">
+
+  <!-- Sidebar -->
+  <aside class="dash-sidebar">
+    <div class="dash-brand">📊 پنل همکاری</div>
+
+    <div class="dash-user-mini">
+      <div class="avatar" id="userAvatar">ع</div>
+      <div class="info">
+        <div class="name" id="userName">—</div>
+        <div class="id" id="userId">—</div>
+      </div>
+    </div>
+
+    <nav class="dash-nav">
+      <a class="active" data-target="overview"><span class="icon">📈</span> نمای کلی</a>
+      <a data-target="referral"><span class="icon">🔗</span> لینک دعوت</a>
+      <a data-target="commissions"><span class="icon">💰</span> کمیسیون‌ها</a>
+      <a data-target="referrals"><span class="icon">👥</span> معرفی‌شده‌ها</a>
+      <a data-target="withdraw"><span class="icon">💳</span> برداشت وجه</a>
+      <a data-target="materials"><span class="icon">🎨</span> مواد تبلیغاتی</a>
+    </nav>
+
+    <a href="affiliate.html" class="btn btn-ghost" style="margin-top:16px;justify-content:center;text-align:center;font-size:0.82rem;padding:10px;">
+      ← بازگشت به صفحه همکاری
+    </a>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main">
+
+    <header class="dash-header">
+      <h1 id="pageTitle">نمای کلی</h1>
+      <div class="dash-header-actions">
+        <button class="btn btn-ghost" id="demoReset" style="padding:8px 14px;font-size:0.82rem;">↺ داده‌های نمونه</button>
+      </div>
+    </header>
+
+    <!-- ============ OVERVIEW ============ -->
+    <section class="dashboard-section active" id="overview">
+      <div class="stats-cards">
+        <div class="stat-card primary">
+          <div class="stat-card-icon">💎</div>
+          <div class="stat-card-label">کل درآمد کسب‌شده</div>
+          <div class="stat-card-value" id="statTotal">—</div>
+          <div class="stat-card-unit">تومان</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">💳</div>
+          <div class="stat-card-label">قابل برداشت</div>
+          <div class="stat-card-value" id="statAvailable">—</div>
+          <div class="stat-card-unit">تومان</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">⏳</div>
+          <div class="stat-card-label">در انتظار تأیید</div>
+          <div class="stat-card-value" id="statPending">—</div>
+          <div class="stat-card-unit">تومان</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">👥</div>
+          <div class="stat-card-label">مشتریان معرفی‌شده</div>
+          <div class="stat-card-value" id="statReferrals">—</div>
+          <div class="stat-card-unit">نفر</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>📊 درآمد ۱۲ ماه گذشته (تومان)</h3>
+        <div class="chart-bars" id="chartBars"></div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>آخرین کمیسیون‌ها</h3>
+          <button class="btn btn-ghost" data-goto="commissions" style="padding:6px 14px;font-size:0.8rem;">مشاهده همه →</button>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="recentCommissionsTable">
+            <thead>
+              <tr>
+                <th>تاریخ</th>
+                <th>مشتری</th>
+                <th>نوع</th>
+                <th>پلن</th>
+                <th>مبلغ پورسانت</th>
+                <th>وضعیت</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REFERRAL LINK ============ -->
+    <section class="dashboard-section" id="referral">
+      <div class="referral-box">
+        <h3>🔗 لینک اختصاصی شما</h3>
+        <p style="color:var(--muted);font-size:0.88rem;margin-bottom:16px;">
+          این لینک رو با مخاطبانت به اشتراک بذار. هر کسی که از این لینک وارد بشه و خرید کنه، به تو پورسانت تعلق می‌گیره.
+        </p>
+        <div class="referral-input-group">
+          <input type="text" class="referral-input" id="refLink" readonly>
+          <button class="copy-btn" id="copyLink">📋 کپی</button>
+        </div>
+
+        <h3 style="margin-top:24px;">🎟️ کد تخفیف اختصاصی شما</h3>
+        <p style="color:var(--muted);font-size:0.88rem;margin-bottom:12px;">
+          این کد رو به مخاطبانت بده تا حتی بدون کلیک روی لینک هم پورسانت به تو تعلق بگیره.
+        </p>
+        <div class="coupon-box">
+          <span class="coupon-code" id="couponCode">—</span>
+          <button class="coupon-copy" id="copyCoupon">کپی کد</button>
+        </div>
+
+        <div class="referral-stats">
+          <div class="referral-stat">
+            <div class="value" id="refClicks">—</div>
+            <div class="label">کلیک روی لینک</div>
+          </div>
+          <div class="referral-stat">
+            <div class="value" id="refSignups">—</div>
+            <div class="label">ثبت‌نام</div>
+          </div>
+          <div class="referral-stat">
+            <div class="value" id="refSales">—</div>
+            <div class="label">خرید موفق</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>📱 متن‌های آماده برای اشتراک‌گذاری</h3>
+        </div>
+        <div style="padding: 24px;">
+          <div style="margin-bottom:20px;">
+            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:8px;">📷 برای اینستاگرام:</div>
+            <textarea class="referral-input" readonly rows="3" style="width:100%;font-family:inherit;direction:rtl;text-align:right;">🚀 بدون کدنویسی، سایت خودت رو در چند دقیقه بساز! ۵۰٪ تخفیف با کد ALI50 — فقط از طریق لینک زیر:
+https://yoursite.com/?ref=ALI-2024</textarea>
+          </div>
+          <div style="margin-bottom:20px;">
+            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:8px;">💬 برای تلگرام / واتساپ:</div>
+            <textarea class="referral-input" readonly rows="3" style="width:100%;font-family:inherit;direction:rtl;text-align:right;">سلام! اگه دنبال ساخت سایت آسون و سریع هستی، سایت‌ساز رو پیشنهاد می‌کنم. با لینک من ۵۰٪ تخفیف می‌گیری:
+https://yoursite.com/?ref=ALI-2024</textarea>
+          </div>
+          <div>
+            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:8px;">📧 برای ایمیل / خبرنامه:</div>
+            <textarea class="referral-input" readonly rows="4" style="width:100%;font-family:inherit;direction:rtl;text-align:right;">سلام،
+
+اگه مثل من دنبال یه راه ساده برای ساخت سایت بودی، پیشنهاد می‌کنم سایت‌ساز رو امتحان کنی. بدون کدنویسی، در چند دقیقه سایتت آماده‌ست. با کد تخفیف اختصاصی من (ALI50) ۵۰٪ تخفیف می‌گیری.
+
+لینک: https://yoursite.com/?ref=ALI-2024</textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMMISSIONS ============ -->
+    <section class="dashboard-section" id="commissions">
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>💰 تمام کمیسیون‌ها</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <select id="commissionFilter" style="padding:8px 14px;background:var(--bg2);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:var(--text);font-family:inherit;font-size:0.82rem;cursor:pointer;">
+              <option value="all">همه</option>
+              <option value="pending">در انتظار</option>
+              <option value="approved">تأییدشده</option>
+              <option value="paid">پرداخت‌شده</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="allCommissionsTable">
+            <thead>
+              <tr>
+                <th>شناسه</th>
+                <th>تاریخ</th>
+                <th>مشتری</th>
+                <th>نوع</th>
+                <th>پلن</th>
+                <th>مبلغ خرید</th>
+                <th>پورسانت شما</th>
+                <th>وضعیت</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REFERRALS ============ -->
+    <section class="dashboard-section" id="referrals">
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>👥 مشتریان معرفی‌شده</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="referralsTable">
+            <thead>
+              <tr>
+                <th>مشتری</th>
+                <th>تاریخ عضویت</th>
+                <th>پلن</th>
+                <th>وضعیت</th>
+                <th>آخرین پرداخت</th>
+                <th>مدت انتساب</th>
+                <th>کل پورسانت</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WITHDRAW ============ -->
+    <section class="dashboard-section" id="withdraw">
+      <div class="withdraw-form">
+        <h3>💳 درخواست برداشت وجه</h3>
+
+        <div class="withdraw-available">
+          <span class="label">موجودی قابل برداشت:</span>
+          <span class="value" id="withdrawAvailable">— <small>تومان</small></span>
+        </div>
+
+        <form id="withdrawForm">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <div>
+              <label style="display:block;font-size:0.85rem;color:var(--muted);margin-bottom:8px;">مبلغ برداشت (تومان)</label>
+              <input type="number" id="withdrawAmount" min="200000" step="1000" placeholder="مثلاً ۳۰۰۰۰۰۰" required
+                style="width:100%;padding:12px 16px;background:var(--bg2);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:inherit;font-size:0.95rem;">
+              <small style="display:block;font-size:0.75rem;color:var(--muted);margin-top:6px;">حداقل ۲۰۰,۰۰۰ تومان</small>
+            </div>
+            <div>
+              <label style="display:block;font-size:0.85rem;color:var(--muted);margin-bottom:8px;">شماره شبا</label>
+              <input type="text" id="withdrawIban" placeholder="IR..." required
+                style="width:100%;padding:12px 16px;background:var(--bg2);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:monospace;font-size:0.9rem;direction:ltr;text-align:left;">
+              <small style="display:block;font-size:0.75rem;color:var(--muted);margin-top:6px;">به نام خودتان باشد</small>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:0.85rem;color:var(--muted);margin-bottom:8px;">توضیحات (اختیاری)</label>
+            <textarea id="withdrawNote" rows="2" placeholder="اگر توضیحی داری بنویس..."
+              style="width:100%;padding:12px 16px;background:var(--bg2);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary full">ثبت درخواست برداشت</button>
+          <p style="color:var(--muted);font-size:0.78rem;margin-top:12px;line-height:1.7;">
+            ⏱️ درخواست‌ها در روزهای ۱ تا ۵ هر ماه بررسی می‌شن و تا روز ۱۰ به حسابت واریز می‌شه.
+          </p>
+        </form>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>📜 تاریخچه برداشت‌ها</h3>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table" id="withdrawalsTable">
+            <thead>
+              <tr>
+                <th>شناسه</th>
+                <th>تاریخ</th>
+                <th>مبلغ</th>
+                <th>شبا</th>
+                <th>وضعیت</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MATERIALS ============ -->
+    <section class="dashboard-section" id="materials">
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:24px;">
+        از این بنرها و مواد آماده برای معرفی استفاده کن. کافیه روی «کپی لینک بنر» بزنی و لینک اختصاصی خودت رو داشته باشی.
+      </p>
+
+      <div class="materials-grid">
+        <div class="material-card">
+          <div class="material-preview">🚀 سایت‌ساز</div>
+          <div class="material-body">
+            <h4>بنر افقی (۱۲۰۰×۶۲۸)</h4>
+            <p>مناسب برای توییتر، لینکدین و هدر وبلاگ</p>
+            <div class="material-actions">
+              <button class="btn btn-ghost btn-sm copy-banner" data-banner="horizontal">📋 کپی لینک</button>
+              <button class="btn btn-ghost btn-sm">⬇️ دانلود</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="material-card">
+          <div class="material-preview m2">📱 سایت‌ساز</div>
+          <div class="material-body">
+            <h4>بنر عمودی (۱۰۸۰×۱۹۲۰)</h4>
+            <p>مناسب برای استوری اینستاگرام</p>
+            <div class="material-actions">
+              <button class="btn btn-ghost btn-sm copy-banner" data-banner="vertical">📋 کپی لینک</button>
+              <button class="btn btn-ghost btn-sm">⬇️ دانلود</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="material-card">
+          <div class="material-preview m3">💰 ۵۰٪</div>
+          <div class="material-body">
+            <h4>بنر تخفیف (۱۰۸۰×۱۰۸۰)</h4>
+            <p>مناسب برای پست اینستاگرام</p>
+            <div class="material-actions">
+              <button class="btn btn-ghost btn-sm copy-banner" data-banner="discount">📋 کپی لینک</button>
+              <button class="btn btn-ghost btn-sm">⬇️ دانلود</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="material-card">
+          <div class="material-preview m4">🎁 کد ALI50</div>
+          <div class="material-body">
+            <h4>بنر کد تخفیف</h4>
+            <p>مناسب برای استوری و پست</p>
+            <div class="material-actions">
+              <button class="btn btn-ghost btn-sm copy-banner" data-banner="coupon">📋 کپی لینک</button>
+              <button class="btn btn-ghost btn-sm">⬇️ دانلود</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="dash-toast" id="dashToast"></div>
+
+<script src="js/config.js"></script>
+<script>
+function esc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+}
+/* ============ DEMO DATA SEEDING ============ */
+const STORAGE_KEY = 'affiliateDashboardData';
+
+function seedDemoData() {
+  const now = new Date();
+  const data = {
+    affiliate: {
+      name: 'علی احمدی',
+      id: 'ALI-2024',
+      email: 'ali@example.com',
+      referralLink: 'https://yoursite.com/?ref=ALI-2024',
+      couponCode: 'ALI50',
+      iban: 'IR123456789012345678901234'
+    },
+    stats: {
+      totalEarned: 28350000,
+      available: 21155500,
+      pending: 1495000,
+      withdrawn: 5700000,
+      referralsCount: 12,
+      clicks: 342,
+      signups: 18,
+      sales: 12
+    },
+    monthly: [
+      { m: 'فروردین', v: 0 },
+      { m: 'اردیبهشت', v: 897000 },
+      { m: 'خرداد', v: 1345500 },
+      { m: 'تیر', v: 2242500 },
+      { m: 'مرداد', v: 2990000 },
+      { m: 'شهریور', v: 3140000 },
+      { m: 'مهر', v: 4485000 },
+      { m: 'آبان', v: 4933500 },
+      { m: 'آذر', v: 0 },
+      { m: 'دی', v: 0 },
+      { m: 'بهمن', v: 0 },
+      { m: 'اسفند', v: 0 }
+    ],
+    commissions: [
+      { id: 'C-1024', date: '۱۴۰۴/۰۸/۰۲', customer: 'م-۱۰۲۳', type: 'تمدید', plan: 'حرفه‌ای', purchase: 299000, amount: 149500, status: 'pending' },
+      { id: 'C-1023', date: '۱۴۰۴/۰۷/۲۸', customer: 'م-۱۰۱۹', type: 'تمدید', plan: 'کسب و کار', purchase: 899000, amount: 449500, status: 'pending' },
+      { id: 'C-1022', date: '۱۴۰۴/۰۷/۲۵', customer: 'م-۱۰۲۲', type: 'خرید اول', plan: 'حرفه‌ای', purchase: 299000, amount: 149500, status: 'approved' },
+      { id: 'C-1021', date: '۱۴۰۴/۰۷/۲۰', customer: 'م-۱۰۱۵', type: 'تمدید', plan: 'حرفه‌ای', purchase: 299000, amount: 149500, status: 'approved' },
+      { id: 'C-1020', date: '۱۴۰۴/۰۷/۱۵', customer: 'م-۱۰۲۱', type: 'خرید اول', plan: 'کسب و کار', purchase: 899000, amount: 449500, status: 'paid' },
+      { id: 'C-1019', date: '۱۴۰۴/۰۷/۱۰', customer: 'م-۱۰۱۸', type: 'تمدید', plan: 'حرفه‌ای', purchase: 299000, amount: 149500, status: 'paid' },
+      { id: 'C-1018', date: '۱۴۰۴/۰۷/۰۵', customer: 'م-۱۰۲۰', type: 'خرید اول', plan: 'حرفه‌ای', purchase: 299000, amount: 149500, status: 'paid' },
+      { id: 'C-1017', date: '۱۴۰۴/۰۶/۲۸', customer: 'م-۱۰۱۲', type: 'تمدید', plan: 'کسب و کار', purchase: 899000, amount: 449500, status: 'paid' }
+    ],
+    referrals: [
+      { name: 'م-۱۰۲۳', joined: '۱۴۰۴/۰۷/۲۵', plan: 'حرفه‌ای', status: 'active', lastPayment: '۱۴۰۴/۰۸/۰۲', monthsActive: 2, totalCommission: 299000 },
+      { name: 'م-۱۰۲۲', joined: '۱۴۰۴/۰۷/۲۰', plan: 'حرفه‌ای', status: 'active', lastPayment: '۱۴۰۴/۰۷/۲۵', monthsActive: 1, totalCommission: 149500 },
+      { name: 'م-۱۰۲۱', joined: '۱۴۰۴/۰۷/۱۵', plan: 'کسب و کار', status: 'active', lastPayment: '۱۴۰۴/۰۷/۱۵', monthsActive: 1, totalCommission: 449500 },
+      { name: 'م-۱۰۲۰', joined: '۱۴۰۴/۰۷/۰۵', plan: 'حرفه‌ای', status: 'active', lastPayment: '۱۴۰۴/۰۷/۰۵', monthsActive: 1, totalCommission: 149500 },
+      { name: 'م-۱۰۱۹', joined: '۱۴۰۴/۰۶/۲۸', plan: 'کسب و کار', status: 'active', lastPayment: '۱۴۰۴/۰۷/۲۸', monthsActive: 2, totalCommission: 899000 },
+      { name: 'م-۱۰۱۸', joined: '۱۴۰۴/۰۶/۱۵', plan: 'حرفه‌ای', status: 'inactive', lastPayment: '۱۴۰۴/۰۷/۱۰', monthsActive: 2, totalCommission: 299000 },
+      { name: 'م-۱۰۱۵', joined: '۱۴۰۴/۰۵/۲۰', plan: 'حرفه‌ای', status: 'active', lastPayment: '۱۴۰۴/۰۷/۲۰', monthsActive: 3, totalCommission: 448500 }
+    ],
+    withdrawals: [
+      { id: 'W-1023', date: '۱۴۰۴/۰۶/۱۰', amount: 3000000, iban: 'IR1234...5678', status: 'paid' },
+      { id: 'W-1022', date: '۱۴۰۴/۰۵/۰۸', amount: 2700000, iban: 'IR1234...5678', status: 'paid' }
+    ]
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  return data;
+}
+
+function loadData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+    if (saved) return saved;
+  } catch (e) {}
+  return seedDemoData();
+}
+
+function saveData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+let DATA = loadData();
+
+/* ============ UTILS ============ */
+function fmtMoney(n) {
+  return Math.floor(n).toLocaleString('fa-IR');
+}
+function fmtNum(n) {
+  return Math.floor(n).toLocaleString('fa-IR');
+}
+
+function showToast(msg, isError) {
+  const t = document.getElementById('dashToast');
+  t.textContent = msg;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('✓ کپی شد!')).catch(() => showToast('خطا در کپی', true));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('✓ کپی شد!'); } catch (e) { showToast('خطا در کپی', true); }
+    document.body.removeChild(ta);
+  }
+}
+
+function statusLabel(s) {
+  const map = { pending: 'در انتظار', approved: 'تأییدشده', paid: 'پرداخت‌شده', rejected: 'رد شده', active: 'فعال', inactive: 'غیرفعال' };
+  return map[s] || s;
+}
+function statusClass(s) {
+  return s;
+}
+
+/* ============ RENDER: USER ============ */
+function renderUser() {
+  const a = DATA.affiliate;
+  document.getElementById('userName').textContent = a.name;
+  document.getElementById('userId').textContent = a.id;
+  document.getElementById('userAvatar').textContent = a.name.charAt(0);
+}
+
+/* ============ RENDER: STATS ============ */
+function renderStats() {
+  const s = DATA.stats;
+  document.getElementById('statTotal').textContent = fmtMoney(s.totalEarned);
+  document.getElementById('statAvailable').textContent = fmtMoney(s.available);
+  document.getElementById('statPending').textContent = fmtMoney(s.pending);
+  document.getElementById('statReferrals').textContent = fmtNum(s.referralsCount);
+}
+
+/* ============ RENDER: CHART ============ */
+function renderChart() {
+  const container = document.getElementById('chartBars');
+  const monthly = DATA.monthly;
+  const max = Math.max(...monthly.map(m => m.v), 1);
+  container.innerHTML = monthly.map(m => {
+    const heightPct = m.v > 0 ? Math.max((m.v / max) * 100, 4) : 2;
+    return `
+      <div class="chart-bar">
+        <div class="chart-bar-value">${m.v > 0 ? fmtMoney(m.v) : ''}</div>
+        <div class="chart-bar-inner" style="height:${heightPct}%"></div>
+        <div class="chart-bar-label">${m.m}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ============ RENDER: COMMISSIONS TABLE ============ */
+function renderCommissions(filter = 'all') {
+  const rows = DATA.commissions.filter(c => filter === 'all' || c.status === filter);
+  document.querySelectorAll('#allCommissionsTable tbody, #recentCommissionsTable tbody').forEach(tb => {
+    const isRecent = tb.parentElement.id === 'recentCommissionsTable';
+    const data = isRecent ? rows.slice(0, 5) : rows;
+    if (data.length === 0) {
+      tb.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">هنوز کمیسیونی ثبت نشده</td></tr>`;
+      return;
+    }
+    if (isRecent) {
+      tb.innerHTML = data.map(c => `
+        <tr>
+          <td class="muted">${c.date}</td>
+          <td class="mono">${c.customer}</td>
+          <td>${c.type}</td>
+          <td>${c.plan}</td>
+          <td class="amount" style="color:#6ee7b7;">+${fmtMoney(c.amount)}</td>
+          <td><span class="status-badge ${statusClass(c.status)}">${statusLabel(c.status)}</span></td>
+        </tr>
+      `).join('');
+    } else {
+      tb.innerHTML = data.map(c => `
+        <tr>
+          <td class="mono">${c.id}</td>
+          <td class="muted">${c.date}</td>
+          <td class="mono">${c.customer}</td>
+          <td>${c.type}</td>
+          <td>${c.plan}</td>
+          <td class="muted">${fmtMoney(c.purchase)}</td>
+          <td class="amount" style="color:#6ee7b7;">+${fmtMoney(c.amount)}</td>
+          <td><span class="status-badge ${statusClass(c.status)}">${statusLabel(c.status)}</span></td>
+        </tr>
+      `).join('');
+    }
+  });
+}
+
+/* ============ RENDER: REFERRALS TABLE ============ */
+function renderReferrals() {
+  const tb = document.querySelector('#referralsTable tbody');
+  if (DATA.referrals.length === 0) {
+    tb.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">هنوز مشتری معرفی نکردی</td></tr>`;
+    return;
+  }
+  tb.innerHTML = DATA.referrals.map(r => {
+    const monthsLeft = Math.max(12 - r.monthsActive, 0);
+    return `
+      <tr>
+        <td class="mono">${esc(r.name)}</td>
+        <td class="muted">${esc(r.joined)}</td>
+        <td>${esc(r.plan)}</td>
+        <td><span class="status-badge ${r.status}">${statusLabel(r.status)}</span></td>
+        <td class="muted">${r.lastPayment}</td>
+        <td>${monthsLeft} ماه باقی‌مانده</td>
+        <td class="amount" style="color:#6ee7b7;">${fmtMoney(r.totalCommission)}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* ============ RENDER: WITHDRAWALS ============ */
+function renderWithdrawals() {
+  const tb = document.querySelector('#withdrawalsTable tbody');
+  if (DATA.withdrawals.length === 0) {
+    tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--muted);">هنوز درخواست برداشتی نداشتی</td></tr>`;
+    return;
+  }
+  tb.innerHTML = DATA.withdrawals.map(w => `
+    <tr>
+      <td class="mono">${w.id}</td>
+      <td class="muted">${w.date}</td>
+      <td class="amount">${fmtMoney(w.amount)} تومان</td>
+      <td class="mono muted">${w.iban}</td>
+      <td><span class="status-badge ${w.status}">${statusLabel(w.status)}</span></td>
+    </tr>
+  `).join('');
+}
+
+/* ============ RENDER: REFERRAL LINK SECTION ============ */
+function renderReferralSection() {
+  document.getElementById('refLink').value = DATA.affiliate.referralLink;
+  document.getElementById('couponCode').textContent = DATA.affiliate.couponCode;
+  document.getElementById('refClicks').textContent = fmtNum(DATA.stats.clicks);
+  document.getElementById('refSignups').textContent = fmtNum(DATA.stats.signups);
+  document.getElementById('refSales').textContent = fmtNum(DATA.stats.sales);
+}
+
+/* ============ RENDER: WITHDRAW AVAILABLE ============ */
+function renderWithdrawAvailable() {
+  document.getElementById('withdrawAvailable').innerHTML = fmtMoney(DATA.stats.available) + ' <small>تومان</small>';
+}
+
+/* ============ RENDER ALL ============ */
+function renderAll() {
+  renderUser();
+  renderStats();
+  renderChart();
+  renderCommissions();
+  renderReferrals();
+  renderWithdrawals();
+  renderReferralSection();
+  renderWithdrawAvailable();
+}
+
+/* ============ NAVIGATION ============ */
+const titles = {
+  overview: 'نمای کلی',
+  referral: 'لینک دعوت',
+  commissions: 'کمیسیون‌ها',
+  referrals: 'مشتریان معرفی‌شده',
+  withdraw: 'برداشت وجه',
+  materials: 'مواد تبلیغاتی'
+};
+
+function showSection(target) {
+  document.querySelectorAll('.dash-nav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.target === target);
+  });
+  document.querySelectorAll('.dashboard-section').forEach(sec => {
+    sec.classList.toggle('active', sec.id === target);
+  });
+  document.getElementById('pageTitle').textContent = titles[target] || '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.dash-nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    showSection(a.dataset.target);
+  });
+});
+
+document.querySelectorAll('[data-goto]').forEach(btn => {
+  btn.addEventListener('click', () => showSection(btn.dataset.goto));
+});
+
+/* ============ COPY BUTTONS ============ */
+document.getElementById('copyLink').addEventListener('click', function () {
+  copyToClipboard(DATA.affiliate.referralLink);
+  this.classList.add('copied');
+  this.textContent = '✓ کپی شد';
+  setTimeout(() => {
+    this.classList.remove('copied');
+    this.textContent = '📋 کپی';
+  }, 2000);
+});
+
+document.getElementById('copyCoupon').addEventListener('click', function () {
+  copyToClipboard(DATA.affiliate.couponCode);
+  this.textContent = '✓ کپی شد';
+  setTimeout(() => { this.textContent = 'کپی کد'; }, 2000);
+});
+
+document.querySelectorAll('.copy-banner').forEach(btn => {
+  btn.addEventListener('click', () => {
+    copyToClipboard(DATA.affiliate.referralLink);
+  });
+});
+
+/* ============ COMMISSIONS FILTER ============ */
+const filterSelect = document.getElementById('commissionFilter');
+if (filterSelect) {
+  filterSelect.addEventListener('change', () => {
+    renderCommissions(filterSelect.value);
+  });
+}
+
+/* ============ WITHDRAW FORM ============ */
+document.getElementById('withdrawForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const amount = parseInt(document.getElementById('withdrawAmount').value, 10);
+  const iban = document.getElementById('withdrawIban').value.trim();
+  const note = document.getElementById('withdrawNote').value.trim();
+
+  if (!amount || amount < 200000) {
+    showToast('حداقل مبلغ برداشت ۲۰۰,۰۰۰ تومانه', true);
+    return;
+  }
+  if (amount > DATA.stats.available) {
+    showToast('مبلغ درخواستی بیشتر از موجودی قابل برداشته', true);
+    return;
+  }
+  if (!iban || iban.length < 24) {
+    showToast('شماره شبا معتبر وارد کن (با IR شروع بشه)', true);
+    return;
+  }
+
+  // Add to withdrawals
+  const newW = {
+    id: 'W-' + (1000 + DATA.withdrawals.length),
+    date: new Date().toLocaleDateString('fa-IR'),
+    amount: amount,
+    iban: iban.slice(0, 6) + '...' + iban.slice(-4),
+    status: 'pending'
+  };
+  DATA.withdrawals.unshift(newW);
+  DATA.stats.available -= amount;
+  DATA.stats.withdrawn += amount;
+  saveData(DATA);
+
+  renderWithdrawals();
+  renderWithdrawAvailable();
+  renderStats();
+
+  this.reset();
+  showToast('✓ درخواست برداشت ثبت شد. ظرف ۱۰ روز بررسی می‌شود.');
+});
+
+/* ============ DEMO RESET ============ */
+document.getElementById('demoReset').addEventListener('click', () => {
+  if (confirm('داده‌های نمونه بازنشانی شود؟ (فقط برای تست)')) {
+    DATA = seedDemoData();
+    renderAll();
+    showToast('✓ داده‌های نمونه بازنشانی شد');
+  }
+});
+
+/* ============ INIT ============ */
+renderAll();
+</script>
+</body>
+</html>

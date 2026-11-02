@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ویرایش محتوا | سایت‌ساز</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pro.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body data-page="list">
+
+<div id="editorRoot"></div>
+
+<template id="pageBody">
+
+<section class="editor-section" style="padding:20px">
+  <div class="pl-toolbar">
+    <input type="search" class="search" id="plSearch" placeholder="جستجو…">
+    <button type="button" class="btn btn-primary" id="plAdd">➕ افزودن</button>
+  </div>
+  <div class="pl-count" id="plCount"></div>
+  <div class="pl-list" id="plList"></div>
+</section>
+
+<div class="ed-modal" id="formModal">
+  <div class="box wide">
+    <h3 id="fmTitle"></h3>
+    <div id="fmFields"></div>
+    <div class="err" id="fmErr"></div>
+    <div class="acts">
+      <button type="button" class="btn btn-primary" id="fmSave">ذخیره</button>
+      <button type="button" class="btn btn-ghost" id="fmCancel">انصراف</button>
+    </div>
+  </div>
+</div>
+
+<div class="ed-modal" id="delModal">
+  <div class="box">
+    <h3>حذف شود؟</h3>
+    <p id="delText"></p>
+    <div class="acts">
+      <button type="button" class="btn btn-ghost" id="delNo">انصراف</button>
+      <button type="button" class="btn btn-danger-solid" id="delYes">بله، حذف شود</button>
+    </div>
+  </div>
+</div>
+
+</template>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/editor-core.js"></script>
+<script>
+
+/* تنظیم هر نوع محتوا: کلید داده در editor_json، فیلدها، و نحوه‌ی نمایش در لیست */
+var TYPES = {
+  services: { icon: '🧰', title: 'خدمات', noun: 'خدمت', add: 'افزودن خدمت', max: 50, main: 'title', sub: 'desc', empty: 'هنوز خدمتی اضافه نکرده‌ای. خدمات اصلی کسب‌وکارت را اینجا بنویس.',
+    fields: [{ k: 'title', l: 'عنوان خدمت', max: 60, req: 1, ph: 'مثلاً: طراحی لوگو' }, { k: 'price', l: 'قیمت یا شروع قیمت (اختیاری)', max: 40, ph: 'مثلاً: از ۵۰۰ هزار تومان' }, { k: 'desc', l: 'توضیح', area: 1, max: 300 }] },
+  articles: { icon: '📝', title: 'مقالات', noun: 'مقاله', add: 'افزودن مقاله', max: 50, main: 'title', sub: 'summary', empty: 'هنوز مقاله‌ای ننوشته‌ای. می‌توانی اول به‌صورت پیش‌نویس ذخیره کنی.',
+    fields: [{ k: 'title', l: 'عنوان مقاله', max: 120, req: 1 }, { k: 'image', l: 'تصویر شاخص (اختیاری)', img: 1 }, { k: 'summary', l: 'خلاصه', area: 1, max: 300 }, { k: 'body', l: 'متن مقاله', area: 1, rows: 8, max: 5000 },
+      { k: 'draft', l: 'پیش‌نویس (در سایت نمایش داده نشود)', chk: 1 }] },
+  podcasts: { icon: '🎙️', title: 'پادکست‌ها', noun: 'قسمت', add: 'افزودن قسمت', max: 50, main: 'title', sub: 'desc', empty: 'هنوز قسمتی اضافه نکرده‌ای.',
+    fields: [{ k: 'title', l: 'عنوان قسمت', max: 120, req: 1 }, { k: 'desc', l: 'توضیح', area: 1, max: 300 }, { k: 'link', l: 'لینک شنیدن (https)', max: 500, ltr: 1, https: 1, ph: 'https://' }] },
+  gallery: { icon: '🖼️', title: 'گالری', noun: 'تصویر', add: 'افزودن تصویر', max: 50, main: 'caption', sub: '', empty: 'گالری خالی است. اولین تصویر را اضافه کن.', mainOr: 'بدون توضیح',
+    fields: [{ k: 'image', l: 'تصویر', img: 1, req: 1 }, { k: 'caption', l: 'توضیح کوتاه (اختیاری)', max: 100 }] },
+  team: { icon: '👥', title: 'تیم', noun: 'عضو', add: 'افزودن عضو', max: 50, main: 'name', sub: 'role', empty: 'هنوز عضوی اضافه نکرده‌ای.',
+    fields: [{ k: 'name', l: 'نام', max: 60, req: 1 }, { k: 'role', l: 'سمت', max: 60, ph: 'مثلاً: مدیر فروش' }, { k: 'image', l: 'عکس (اختیاری)', img: 1 }, { k: 'bio', l: 'درباره‌ی او', area: 1, max: 200 }] },
+  faq: { icon: '❓', title: 'سوالات متداول', noun: 'سوال', add: 'افزودن سوال', max: 50, main: 'q', sub: 'a', empty: 'هنوز سوالی اضافه نکرده‌ای.',
+    fields: [{ k: 'q', l: 'سوال', max: 200, req: 1 }, { k: 'a', l: 'پاسخ', area: 1, rows: 4, max: 600, req: 1 }] },
+  testimonials: { icon: '💬', title: 'نظر مشتریان', noun: 'نظر', add: 'افزودن نظر', max: 50, main: 'name', sub: 'text', empty: 'هنوز نظری اضافه نکرده‌ای. فقط نظرهای واقعی مشتریانت را بنویس.',
+    fields: [{ k: 'name', l: 'نام مشتری', max: 60, req: 1 }, { k: 'text', l: 'متن نظر', area: 1, rows: 4, max: 400, req: 1 }] },
+  pages: { icon: '📄', title: 'صفحه‌های سفارشی', noun: 'صفحه', add: 'افزودن صفحه', max: 10, main: 'title', sub: 'body', empty: 'هنوز صفحه‌ای نساخته‌ای. مثلاً «درباره ما» یا «قوانین ارسال».', pages: 1,
+    fields: [{ k: 'title', l: 'عنوان صفحه', max: 80, req: 1, ph: 'مثلاً: درباره ما' }, { k: 'body', l: 'متن صفحه (بین پاراگراف‌ها یک خط خالی بگذار)', area: 1, rows: 10, max: 5000, req: 1 }] }
+};
+
+var TYPE = new URLSearchParams(location.search).get('type');
+if (!TYPES[TYPE]) TYPE = 'services';
+var CFG = TYPES[TYPE];
+
+Editor.start('list-' + TYPE, {
+  title: CFG.title, save: false, preview: false,
+  ready: function (E) {
+    var KEY = TYPE, list = document.getElementById('plList'), search = document.getElementById('plSearch'), add = document.getElementById('plAdd');
+    var modal = document.getElementById('formModal'), delModal = document.getElementById('delModal');
+    var editing = -1, draftImg = '', pendingDelete = -1;
+    document.getElementById('edSub').textContent = 'افزودن، ویرایش و مرتب‌کردن';
+    search.placeholder = 'جستجو در ' + CFG.title + '…';
+    add.textContent = '➕ ' + CFG.add;
+    function arr() { return E.editor[KEY]; }
+
+    /* تغییر + ذخیره‌ی فوری؛ در صورت خطا به حالت قبل برمی‌گردد */
+    function mutate(fn, okMsg) {
+      if (E.readOnly) { E.toast('حالت مشاهده (ادمین): امکان تغییر وجود ندارد.', true); return Promise.resolve(); }
+      var before = JSON.parse(JSON.stringify(arr()));
+      fn(arr());
+      paint();
+      return E.save({ silent: true }).then(function () {
+        /* سرور ممکن است slug یا موارد خالی را اصلاح کند؛ همان را از سرور نمی‌گیریم، ولی لیست محلی معتبر است */
+        if (okMsg) E.toast(okMsg);
+      }).catch(function () { E.editor[KEY] = before; paint(); });
+    }
+
+    function paint() {
+      var all = arr(), term = search.value.trim().toLowerCase();
+      add.style.display = all.length >= CFG.max ? 'none' : '';
+      var shown = all.map(function (x, i) { return { x: x, i: i }; }).filter(function (o) {
+        return !term || (String(o.x[CFG.main] || '') + ' ' + String(o.x[CFG.sub] || '')).toLowerCase().indexOf(term) >= 0;
+      });
+      document.getElementById('plCount').textContent = all.length ? E.fmtMoney(all.length) + ' مورد' + (term ? ' — ' + E.fmtMoney(shown.length) + ' نتیجه' : '') + (all.length >= CFG.max ? ' (به سقف ' + E.fmtMoney(CFG.max) + ' مورد رسیده‌ای)' : '') : '';
+      if (!all.length) {
+        list.innerHTML = '<div class="pl-empty"><div class="big">' + CFG.icon + '</div><p>' + E.esc(CFG.empty) + '</p><button type="button" class="btn btn-primary" data-add>➕ ' + E.esc(CFG.add) + '</button></div>';
+        return;
+      }
+      if (!shown.length) { list.innerHTML = '<div class="pl-empty"><p>موردی پیدا نشد.</p></div>'; return; }
+      list.innerHTML = shown.map(function (o) {
+        var x = o.x, img = E.safeImg(x.image), canMove = !term;
+        var sub = CFG.sub ? String(x[CFG.sub] || '') : '';
+        return '<div class="pl-item' + (x.draft ? ' is-hidden' : '') + '">' +
+          '<div class="pl-thumb">' + (img ? '<img src="' + E.esc(img) + '" alt="">' : CFG.icon) + '</div>' +
+          '<div class="pl-info"><div class="pl-name">' + E.esc(x[CFG.main] || CFG.mainOr || 'بدون عنوان') + '</div>' +
+            (sub ? '<div class="pl-sub">' + E.esc(sub.replace(/\s+/g, ' ').slice(0, 90)) + '</div>' : '') +
+            '<div class="pl-meta">' + (x.draft ? '<span class="tag warn">پیش‌نویس</span>' : '') + (CFG.pages ? '<span class="tag" style="direction:ltr">/p/' + E.esc(x.slug || '') + '</span>' : '') + (x.price ? '<span class="tag">' + E.esc(x.price) + '</span>' : '') + '</div></div>' +
+          '<div class="pl-actions">' +
+            '<button type="button" data-act="up" data-i="' + o.i + '" title="بالاتر"' + (!canMove || o.i === 0 ? ' disabled' : '') + '>↑</button>' +
+            '<button type="button" data-act="down" data-i="' + o.i + '" title="پایین‌تر"' + (!canMove || o.i === all.length - 1 ? ' disabled' : '') + '>↓</button>' +
+            '<button type="button" data-act="edit" data-i="' + o.i + '" title="ویرایش">✏️</button>' +
+            '<button type="button" class="del" data-act="del" data-i="' + o.i + '" title="حذف">🗑️</button>' +
+          '</div></div>';
+      }).join('');
+    }
+
+    /* ---------- فرم ---------- */
+    function fieldHtml(f, v) {
+      var id = 'f_' + f.k, h = '<div class="editor-field"><label' + (f.chk ? '' : ' for="' + id + '"') + '>' + (f.chk ? '' : E.esc(f.l)) + '</label>';
+      if (f.chk) return '<div class="editor-field"><label class="chk-row"><input type="checkbox" id="' + id + '"' + (v ? ' checked' : '') + '> ' + E.esc(f.l) + '</label></div>';
+      if (f.img) return h + '<div class="img-pick"><div class="pl-thumb" id="imgThumb"></div><div class="btns"><input type="file" accept="image/*" id="imgFile"><button type="button" class="btn btn-ghost" id="imgClear">حذف تصویر</button></div></div></div>';
+      if (f.area) return h + '<textarea id="' + id + '" rows="' + (f.rows || 3) + '" maxlength="' + f.max + '"></textarea></div>';
+      return h + '<input type="text" id="' + id + '" maxlength="' + f.max + '"' + (f.ph ? ' placeholder="' + E.esc(f.ph) + '"' : '') + (f.ltr ? ' style="direction:ltr;text-align:left"' : '') + '></div>';
+    }
+    function paintThumb() {
+      var t = document.getElementById('imgThumb'); if (!t) return;
+      var u = E.safeImg(draftImg);
+      t.innerHTML = u ? '<img src="' + E.esc(u) + '" alt="">' : CFG.icon;
+    }
+    function openForm(i) {
+      editing = i;
+      var item = i >= 0 ? arr()[i] : {};
+      document.getElementById('fmTitle').textContent = i >= 0 ? 'ویرایش ' + CFG.noun : CFG.add;
+      document.getElementById('fmErr').textContent = '';
+      var box = document.getElementById('fmFields');
+      box.innerHTML = CFG.fields.map(function (f) { return fieldHtml(f, item[f.k]); }).join('');
+      CFG.fields.forEach(function (f) {
+        var el = document.getElementById('f_' + f.k);
+        if (el && !f.chk) el.value = item[f.k] || '';
+      });
+      draftImg = item.image || '';
+      paintThumb();
+      var fi = document.getElementById('imgFile');
+      if (fi) {
+        fi.addEventListener('change', function () {
+          var file = fi.files[0]; if (!file) return;
+          E.toast('در حال آپلود…');
+          E.upload(file).then(function (u) { fi.value = ''; if (u) { draftImg = u; paintThumb(); E.toast('تصویر بارگذاری شد'); } });
+        });
+        document.getElementById('imgClear').addEventListener('click', function () { draftImg = ''; paintThumb(); });
+      }
+      modal.classList.add('show');
+      var first = box.querySelector('input[type=text],textarea'); if (first) first.focus();
+    }
+    function submitForm() {
+      var o = {}, err = '';
+      CFG.fields.forEach(function (f) {
+        if (f.img) { o.image = draftImg; if (f.req && !draftImg) err = 'تصویر را انتخاب کن.'; return; }
+        var el = document.getElementById('f_' + f.k);
+        if (f.chk) { o[f.k] = el.checked; return; }
+        var v = el.value.trim();
+        if (f.req && !v && !err) err = '«' + f.l + '» را وارد کن.';
+        if (f.https && v && !/^https:\/\/\S+$/.test(v)) err = 'لینک باید با https:// شروع شود.';
+        o[f.k] = v;
+      });
+      if (err) { document.getElementById('fmErr').textContent = err; return; }
+      modal.classList.remove('show');
+      var i = editing;
+      mutate(function (a) {
+        if (i >= 0) a[i] = Object.assign({}, a[i], o); else { if (CFG.pages) o.slug = 'page-' + Date.now().toString(36); a.push(o); }
+      }, i >= 0 ? '✓ تغییرات ذخیره شد' : '✓ ' + CFG.noun + ' جدید ذخیره شد');
+    }
+
+    add.addEventListener('click', function () { openForm(-1); });
+    list.addEventListener('click', function (ev) {
+      if (ev.target.closest('[data-add]')) { openForm(-1); return; }
+      var b = ev.target.closest('button[data-act]'); if (!b) return;
+      var i = +b.dataset.i, act = b.dataset.act;
+      if (act === 'edit') openForm(i);
+      else if (act === 'del') {
+        pendingDelete = i;
+        document.getElementById('delText').textContent = '«' + (arr()[i][CFG.main] || CFG.mainOr || 'بدون عنوان') + '» برای همیشه از سایت حذف می‌شود.';
+        delModal.classList.add('show');
+      } else if (act === 'up' || act === 'down') {
+        var to = act === 'up' ? i - 1 : i + 1;
+        mutate(function (a) { var t = a[i]; a[i] = a[to]; a[to] = t; });
+      }
+    });
+    document.getElementById('fmSave').addEventListener('click', submitForm);
+    document.getElementById('fmCancel').addEventListener('click', function () { modal.classList.remove('show'); });
+    modal.addEventListener('click', function (e) { if (e.target === modal) modal.classList.remove('show'); });
+    document.getElementById('delNo').addEventListener('click', function () { delModal.classList.remove('show'); pendingDelete = -1; });
+    delModal.addEventListener('click', function (e) { if (e.target === delModal) delModal.classList.remove('show'); });
+    document.getElementById('delYes').addEventListener('click', function () {
+      delModal.classList.remove('show');
+      var i = pendingDelete; pendingDelete = -1;
+      if (i < 0) return;
+      mutate(function (a) { a.splice(i, 1); }, '✓ حذف شد');
+    });
+    search.addEventListener('input', paint);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { modal.classList.remove('show'); delModal.classList.remove('show'); } });
+    paint();
+  }
+});
+
+</script>
+</body>
+</html>
